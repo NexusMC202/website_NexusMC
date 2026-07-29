@@ -8,9 +8,15 @@ const reels = [
   ["05:39", "Архитектура будущего", "city-harbor.png"],
 ];
 
+function ReelSet({ duplicate = false }: { duplicate?: boolean }) {
+  return <div className="reel-set" aria-hidden={duplicate || undefined}>
+    {reels.map(([time,title,image],i)=><article key={`${duplicate ? "copy" : "original"}-${title}-${i}`} style={{backgroundImage:`linear-gradient(0deg,#080b0bec,transparent 75%),url('/${image}')`}}><span className="youtube-badge">▶ YOUTUBE</span><b>{time}</b><h3>{title}</h3><small>ПРИМЕР КОНТЕНТА</small></article>)}
+  </div>;
+}
+
 export default function YouTubePage(){return <main className="media-page youtube-page"><SiteHeader/>
   <section className="media-hero"><p>CREATOR SIGNAL / YOUTUBE</p><h1>СМОТРИ<br /><i>NEXUS</i></h1><p>Ролики игроков, обзоры открытий, войны государств и истории экспедиций.</p></section>
   <section className="youtube-showcase"><header><div><span>COMMUNITY PLAYLIST</span><h2>ЖИВАЯ ЛЕНТА<br />МИРА NEXUS</h2></div><p>Демонстрационные карточки. Настоящие видео появятся после подключения каналов игроков.</p></header>
-    <div className="reel-window"><div className="reel-track">{[...reels,...reels].map(([time,title,image],i)=><article key={`${title}-${i}`} style={{backgroundImage:`linear-gradient(0deg,#080b0bec,transparent 75%),url('/${image}')`}}><span className="youtube-badge">▶ YOUTUBE</span><b>{time}</b><h3>{title}</h3><small>ПРИМЕР КОНТЕНТА</small></article>)}</div></div>
+    <div className="reel-window"><div className="reel-track"><ReelSet /><ReelSet duplicate /></div></div>
     <Link className="youtube-cta" href="/stories/apply">ДОБАВИТЬ YOUTUBE-КАНАЛ <span>↗</span></Link>
   </section><FluxFooter/></main>}
