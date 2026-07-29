@@ -38,7 +38,9 @@ const dictionary: Record<string,string> = {
 export function LanguageRuntime() {
   useEffect(() => {
     if (!sessionStorage.getItem("nexus-session-counted")) {
-      fetch("/api/auth/session", { method:"POST" }).finally(() => sessionStorage.setItem("nexus-session-counted", "1"));
+      fetch("/api/auth/session", { method:"POST" }).then(response => {
+        if (response.status === 401 && location.pathname !== "/login") location.href = "/login?reason=session";
+      }).finally(() => sessionStorage.setItem("nexus-session-counted", "1"));
     }
     const originals = new WeakMap<Text,string>();
     const apply = (lang:string) => {
