@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   },
   description:
     "NEXUS Season II — science-fantasy Minecraft project by Flux Production.",
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: [{ url: "/nexus-favicon.png", type: "image/png", sizes: "1024x1024" }],
+    shortcut: "/nexus-favicon.png",
+    apple: "/nexus-favicon.png",
+  },
   openGraph: {
     title: "NEXUS — One core. Infinite possibilities.",
     description: "Science-fantasy Minecraft NeoForge 1.21.1 · Season II",
