@@ -11,8 +11,11 @@ export const metadata: Metadata = {
   description:
     "NEXUS Season II — science-fantasy Minecraft project by Flux Production.",
   icons: {
-    icon: [{ url: "/nexus-favicon.png", type: "image/png", sizes: "1024x1024" }],
-    shortcut: "/nexus-favicon.png",
+    icon: [
+      { url: "/favicon.ico?v=3", type: "image/x-icon", sizes: "32x32" },
+      { url: "/nexus-favicon.png?v=3", type: "image/png", sizes: "1024x1024" },
+    ],
+    shortcut: "/favicon.ico?v=3",
     apple: "/nexus-favicon.png",
   },
   openGraph: {
