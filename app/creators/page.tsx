@@ -1,2 +1,8 @@
-import { CreatorStack, PageShell } from "../components";
-export default function CreatorsPage(){return <PageShell code="04" title="CREATORS" subtitle="Авторы, стримеры и режиссёры, которые превращают жизнь Nexus в истории."><section className="creator-section section-pad"><CreatorStack/><div className="card-row"><article className="info-card"><span>YOUTUBE</span><h3>Экспедиционные хроники</h3></article><article className="info-card"><span>LIVE</span><h3>Прямые трансляции</h3></article><article className="info-card"><span>CREATOR PROGRAM</span><h3>Стать автором Nexus</h3></article></div></section></PageShell>}
+import { CreatorStack, FluxFooter, SiteHeader } from "../components";
+
+export default function CreatorsPage() {
+  return <main className="creators-page"><SiteHeader />
+    <section className="creators-hero"><div className="creator-title"><p>CREATOR TRANSMISSIONS / 04 FILES</p><h1>ГОЛОСА<br /><i>ЭКСПЕДИЦИИ</i></h1><p>Ролики, прямые эфиры и истории людей, которые документируют жизнь Nexus.</p></div><CreatorStack /></section>
+    <section className="creator-program"><span>ОТКРЫТЫЙ СИГНАЛ</span><h2>ТВОЙ КАНАЛ<br />МОЖЕТ БЫТЬ ЗДЕСЬ.</h2><button>СТАТЬ АВТОРОМ ↗</button></section><FluxFooter />
+  </main>;
+}
