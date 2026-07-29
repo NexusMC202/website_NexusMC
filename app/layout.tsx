@@ -3,7 +3,7 @@ import "./globals.css";
 import { LanguageRuntime } from "./language-runtime";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nexus.flux-productions.com"),
+  metadataBase: new URL("https://nexusmc.flux-productions.com"),
   title: {
     default: "NEXUS — One core. Infinite possibilities.",
     template: "%s — NEXUS",
