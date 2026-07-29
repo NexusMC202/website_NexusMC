@@ -1,0 +1,124 @@
+
+  vinext dev  (Vite 8.0.13)
+
+[2m05:59:35[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [optimizer] bundling dependencies...
+[2m05:59:35[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [optimizer] bundling dependencies...
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3000[22m/[39m
+  [32m➜[39m  [1mDebug[22m:   [2m[33mhttp://localhost:[1m3000[22m[2m/__debug[39m[22m
+ GET / 200 in 1.6s (compile: 1785283167.5s, render: 1.5s)
+[2m06:04:37[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/globals.css[22m
+[2m06:04:37[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mpage reload [39m[2mapp/layout.tsx[22m
+[2m06:04:37[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/layout.tsx[22m
+[2m06:04:37[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mpage reload [39m[2mapp/page.tsx[22m
+[2m06:04:37[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/page.tsx[22m
+[vite] Internal Server Error
+Failed to load url /app/globals.css (resolved id: C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async MinimalPluginContext.hotUpdate (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@vitejs/plugin-rsc/dist/plugin-BhzHKRFo.js:850:8)
+    at async handleHMRUpdate (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26768:29)
+    at async onHMRUpdate (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26273:35)
+    at async onFileAddUnlink (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26291:3)
+[vite] program reload
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+[vite] program reload
+ GET /?_rsc 500 in 721ms
+ GET / 500 in 693ms
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async fetchModule (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:23123:15)
+    at async Object.handleInvoke (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26561:21)
+    at async __VITE_INVOKE_MODULE__ (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@cloudflare/vite-plugin/dist/index.mjs:52697:22)
+    at async #handleLoopbackCustomFetchService (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88266:22)
+    at async #handleLoopback (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88500:20)
+ GET /?_rsc 500 in 588ms
+[vite] program reload
+[2m06:06:40[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:06:40[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:06:40[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/globals.css[22m
+[2m06:06:40[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:06:40[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:06:40[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async fetchModule (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:23123:15)
+    at async Object.handleInvoke (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26561:21)
+    at async __VITE_INVOKE_MODULE__ (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@cloudflare/vite-plugin/dist/index.mjs:52697:22)
+    at async #handleLoopbackCustomFetchService (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88266:22)
+    at async #handleLoopback (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88500:20)
+[vite] program reload
+ GET /?_rsc 500 in 729ms
+ GET / 500 in 594ms
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async fetchModule (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:23123:15)
+    at async Object.handleInvoke (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26561:21)
+    at async __VITE_INVOKE_MODULE__ (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@cloudflare/vite-plugin/dist/index.mjs:52697:22)
+    at async #handleLoopbackCustomFetchService (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88266:22)
+    at async #handleLoopback (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88500:20)
+[vite] program reload
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async fetchModule (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:23123:15)
+    at async Object.handleInvoke (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26561:21)
+    at async __VITE_INVOKE_MODULE__ (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@cloudflare/vite-plugin/dist/index.mjs:52697:22)
+    at async #handleLoopbackCustomFetchService (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88266:22)
+    at async #handleLoopback (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88500:20)
+[vite] program reload
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async fetchModule (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:23123:15)
+    at async Object.handleInvoke (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26561:21)
+    at async __VITE_INVOKE_MODULE__ (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@cloudflare/vite-plugin/dist/index.mjs:52697:22)
+    at async #handleLoopbackCustomFetchService (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88266:22)
+    at async #handleLoopback (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88500:20)
+[vite] program reload
+[vite] An error happened during full reload
+Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+Error: Failed to load url ./globals.css (resolved id: ./globals.css) in C:/Users/user/OneDrive/Документы/nexus/website_NexusMC/app/layout.tsx. Does the file exist?
+    at loadAndTransform (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:24521:31)
+    at async fetchModule (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:23123:15)
+    at async Object.handleInvoke (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/vite/dist/node/chunks/node.js:26561:21)
+    at async __VITE_INVOKE_MODULE__ (file:///C:/Users/user/OneDrive/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/nexus/website_NexusMC/node_modules/@cloudflare/vite-plugin/dist/index.mjs:52697:22)
+    at async #handleLoopbackCustomFetchService (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88266:22)
+    at async #handleLoopback (C:\Users\user\OneDrive\Документы\nexus\website_NexusMC\node_modules\miniflare\dist\src\index.js:88500:20)
+[2m06:07:05[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:07:05[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mpackage.json[22m
+ GET / 500 in 80ms
+[2m06:07:31[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mpage reload [39m[2mapp/_sites-preview/SkeletonPreview.tsx[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/_sites-preview/SkeletonPreview.tsx[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/_sites-preview/SkeletonPreview.tsx[22m
+[vite] program reload
+[2m06:07:31[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/_sites-preview/preview.css[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/_sites-preview/preview.css[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mREADME.md[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/app/globals.css[22m
+[2m06:07:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mREADME.md[22m
+ GET / 500 in 144ms
+[2m06:08:55[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m [32mhmr update [39m[2m/@id/__x00__virtual:vinext-rsc-entry, /app/globals.css[22m
+[2m06:08:55[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mapp/layout.tsx[22m
+[vite] hot updated:  virtual:vinext-rsc-entry
+ GET /?_rsc 200 in 180ms (compile: 1785283167.6s, render: 0ms)
+ GET / 200 in 564ms (compile: 1785283167.6s, render: 417ms)
+[2m06:08:57[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [optimizer] bundling dependencies...
+ GET / 200 in 71ms (compile: 1785283167.5s, render: 53ms)
+[2m06:10:05[22m [36m[1m[vite][22m[39m [32m.openai/hosting.json changed, restarting server...[39m
+[2m06:10:06[22m [36m[1m[vite][22m[39m [34m[2m(rsc)[22m[39m Re-optimizing dependencies because lockfile has changed
+[2m06:10:06[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m Re-optimizing dependencies because lockfile has changed
+[2m06:10:10[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because lockfile has changed
+[2m06:10:10[22m [36m[1m[vite][22m[39m server restarted.
+ GET / 200 in 2.6s (compile: 1785283167.5s, render: 2.5s)
