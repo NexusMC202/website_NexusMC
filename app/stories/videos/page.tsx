@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { FluxFooter, SiteHeader } from "../../components";
+export default function VideosPage(){return <main className="media-page videos-page"><SiteHeader light/><section className="video-head"><p>NEXUS VIDEO ARCHIVE</p><h1>АРХИВ<br /><i>ИСТОРИЙ</i></h1></section><section className="film-strip"><article><span>00:00</span><h2>Архив ждёт первую запись</h2><p>Короткие фильмы, трейлеры государств и важные моменты сезона появятся здесь.</p></article><article className="film-placeholder">NO SIGNAL</article><article className="film-placeholder">NO SIGNAL</article></section><Link className="archive-apply" href="/stories/apply">ПРЕДЛОЖИТЬ ВИДЕО ↗</Link><FluxFooter/></main>}

@@ -12,6 +12,13 @@ const nav = [
 
 export function SiteHeader({ light = false }: { light?: boolean }) {
   const [open, setOpen] = useState(false);
+  const [language, setLanguage] = useState("ru");
+  function toggleLanguage() {
+    const next = language === "ru" ? "en" : "ru";
+    setLanguage(next);
+    localStorage.setItem("nexus-language", next);
+    window.dispatchEvent(new CustomEvent("nexus-language", { detail: next }));
+  }
   return (
     <header className={`site-header ${light ? "light" : ""}`}>
       <Link className="brand" href="/"><b>N</b><span>NEXUS<small>SEASON II</small></span></Link>
@@ -19,7 +26,7 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
       <nav className={open ? "nav open" : "nav"}>
         {nav.map(([href, label], i) => <Link key={href} href={href}><sup>0{i + 1}</sup>{label}</Link>)}
       </nav>
-      <div className="header-actions"><button className="lang">RU / EN</button><Link href="/login">ВОЙТИ ↗</Link></div>
+      <div className="header-actions"><button className="lang" onClick={toggleLanguage}>{language === "ru" ? "RU / EN" : "EN / RU"}</button><Link href="/login">ВОЙТИ ↗</Link></div>
     </header>
   );
 }
@@ -35,10 +42,10 @@ export function ServerStatus() {
 }
 
 const creators = [
-  ["01", "YOUTUBE", "Хроники экспедиции", "night", "https://www.youtube.com/"],
-  ["02", "TWITCH", "Прямой эфир", "field", "https://www.twitch.tv/"],
-  ["03", "TELEGRAM", "Голоса Nexus", "lake", "https://t.me/+UtquhK9n3kdjZGMy"],
-  ["04", "DISCORD", "Ваш канал", "river", "https://discord.gg/7f2XJXGCwA"],
+  ["01", "YOUTUBE", "YouTube игроков", "night", "/stories/youtube"],
+  ["02", "TWITCH", "Прямой эфир", "field", "/stories/twitch"],
+  ["03", "VIDEO", "Видеоархив", "lake", "/stories/videos"],
+  ["04", "APPLY", "Стать автором", "river", "/stories/apply"],
 ];
 
 export function CreatorStack() {
@@ -47,10 +54,10 @@ export function CreatorStack() {
     <div className="paper-orbit">
       <div className="orbit-ring" />
       {creators.map(([n, type, title, image, href], i) => (
-        <a key={n} href={href} target="_blank" rel="noreferrer" className={`paper-card ${image} ${active === i ? "active" : ""}`} style={{ "--i": i } as React.CSSProperties}
+        <Link key={n} href={href} className={`paper-card ${image} ${active === i ? "active" : ""}`} style={{ "--i": i } as React.CSSProperties}
           onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)}>
           <span>{n} / {type}</span><strong>{title}</strong><small>ОТКРЫТЬ ↗</small>
-        </a>
+        </Link>
       ))}
       <div className="orbit-label"><small>CREATOR FILES</small><b>ГОЛОСА<br />NEXUS</b><span>0{active + 1} / 04</span></div>
     </div>

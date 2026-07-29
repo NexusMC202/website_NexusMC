@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { FluxFooter, SiteHeader } from "../../components";
+export default function YouTubePage(){return <main className="media-page youtube-page"><SiteHeader/><section className="media-hero"><p>CREATOR SIGNAL / YOUTUBE</p><h1>СМОТРИ<br /><i>NEXUS</i></h1><p>Ролики игроков, обзоры открытий, войны государств и истории экспедиций.</p></section><section className="media-empty"><span>PLAYLIST / 00</span><h2>КАНАЛЫ ЕЩЁ<br />НЕ ДОБАВЛЕНЫ.</h2><p>После запуска сезона здесь появятся YouTube‑каналы игроков и последние видео.</p><Link href="/stories/apply">ДОБАВИТЬ СВОЙ КАНАЛ ↗</Link></section><FluxFooter/></main>}

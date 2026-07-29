@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LanguageRuntime } from "./language-runtime";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nexus.flux-productions.com"),
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body><LanguageRuntime />{children}</body>
     </html>
   );
 }
