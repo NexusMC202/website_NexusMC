@@ -16,3 +16,22 @@ export const sessions = sqliteTable("sessions", {
   expiresAt: integer("expires_at").notNull(),
   createdAt: integer("created_at").notNull(),
 });
+
+export const telegramLoginChallenges = sqliteTable("telegram_login_challenges", {
+  id: text("id").primaryKey(),
+  codeHash: text("code_hash").notNull().unique(),
+  minecraftNick: text("minecraft_nick").notNull(),
+  status: text("status").notNull().default("pending"),
+  telegramId: text("telegram_id"),
+  userId: text("user_id"),
+  expiresAt: integer("expires_at").notNull(),
+  createdAt: integer("created_at").notNull(),
+  confirmedAt: integer("confirmed_at"),
+});
+
+export const telegramLinks = sqliteTable("telegram_links", {
+  telegramId: text("telegram_id").primaryKey(),
+  userId: text("user_id").notNull().unique(),
+  minecraftNick: text("minecraft_nick").notNull(),
+  linkedAt: integer("linked_at").notNull(),
+});

@@ -22,6 +22,11 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, remaining_entries INTEGER NOT NULL DEFAULT 2, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
     db.prepare("CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions(user_id)"),
     db.prepare("CREATE INDEX IF NOT EXISTS users_minecraft_nick_idx ON users(minecraft_nick COLLATE NOCASE)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS telegram_login_challenges (id TEXT PRIMARY KEY, code_hash TEXT NOT NULL UNIQUE, minecraft_nick TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending', telegram_id TEXT, user_id TEXT, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, confirmed_at INTEGER)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS telegram_login_challenges_nick_idx ON telegram_login_challenges(minecraft_nick COLLATE NOCASE)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS telegram_login_challenges_expiry_idx ON telegram_login_challenges(expires_at)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS telegram_links (telegram_id TEXT PRIMARY KEY, user_id TEXT NOT NULL UNIQUE, minecraft_nick TEXT NOT NULL, linked_at INTEGER NOT NULL)"),
+    db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS telegram_links_nick_idx ON telegram_links(minecraft_nick COLLATE NOCASE)"),
   ]);
 }
 
