@@ -35,10 +35,10 @@ export function ServerStatus() {
 }
 
 const creators = [
-  ["01", "YOUTUBE", "Хроники экспедиции", "night"],
-  ["02", "TWITCH", "Прямой эфир", "field"],
-  ["03", "VIDEO", "Голоса Nexus", "lake"],
-  ["04", "JOIN", "Ваш канал", "river"],
+  ["01", "YOUTUBE", "Хроники экспедиции", "night", "https://www.youtube.com/"],
+  ["02", "TWITCH", "Прямой эфир", "field", "https://www.twitch.tv/"],
+  ["03", "TELEGRAM", "Голоса Nexus", "lake", "https://t.me/+UtquhK9n3kdjZGMy"],
+  ["04", "DISCORD", "Ваш канал", "river", "https://discord.gg/7f2XJXGCwA"],
 ];
 
 export function CreatorStack() {
@@ -46,11 +46,11 @@ export function CreatorStack() {
   return (
     <div className="paper-orbit">
       <div className="orbit-ring" />
-      {creators.map(([n, type, title, image], i) => (
-        <button key={n} className={`paper-card ${image} ${active === i ? "active" : ""}`} style={{ "--i": i } as React.CSSProperties}
+      {creators.map(([n, type, title, image, href], i) => (
+        <a key={n} href={href} target="_blank" rel="noreferrer" className={`paper-card ${image} ${active === i ? "active" : ""}`} style={{ "--i": i } as React.CSSProperties}
           onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)}>
           <span>{n} / {type}</span><strong>{title}</strong><small>ОТКРЫТЬ ↗</small>
-        </button>
+        </a>
       ))}
       <div className="orbit-label"><small>CREATOR FILES</small><b>ГОЛОСА<br />NEXUS</b><span>0{active + 1} / 04</span></div>
     </div>

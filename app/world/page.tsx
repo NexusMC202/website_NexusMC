@@ -11,7 +11,7 @@ const regions = [
 export default function WorldPage() {
   return <main className="world-page">
     <section className="atlas-hero"><SiteHeader />
-      <div className="atlas-copy"><p>WORLD ATLAS / REGION 03</p><h1>СЕВЕРНАЯ<br />ДОЛИНА</h1><div><span>55° 45′ N</span><span>37° 37′ E</span></div></div>
+      <div className="atlas-copy"><p>WORLD ATLAS / REGION 03</p><span className="world-script">Мир</span><h1>СЕВЕРНАЯ<br />ДОЛИНА</h1><div><span>55° 45′ N</span><span>37° 37′ E</span></div></div>
       <div className="atlas-index">01<br />02<br /><b>03</b><br />04<br />05</div>
       <p className="atlas-description">Высокие хвойные леса, отвесные стены и долины, которых ещё нет на картах.</p>
     </section>

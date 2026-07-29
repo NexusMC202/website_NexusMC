@@ -19,7 +19,7 @@ export default function Home() {
 
     <section className="opening">
       <p className="kicker">THE SECOND EXPEDITION</p>
-      <h2>ЗДЕСЬ МИР<br /><i>ПИШУТ ИГРОКИ.</i></h2>
+        <h2>ЗДЕСЬ <span className="editorial-word">мир</span><br /><i>ПИШУТ ИГРОКИ.</i></h2>
       <div className="opening-grid">
         <p>Наука строит цивилизации. Магия переписывает законы. Союзы и конфликты превращаются в историю, которая остаётся после вас.</p>
         <ol><li><span>01</span> Исследуй</li><li><span>02</span> Создавай</li><li><span>03</span> Объединяйся</li></ol>
@@ -36,10 +36,10 @@ export default function Home() {
       <CreatorStack />
     </section>
 
-    <section className="home-news">
-      <div><p className="kicker">LIVE WORLD RECORD</p><h2>СВЕЖЕЕ<br />В ХРОНИКЕ</h2></div>
-      <Link href="/chronicle" className="lead-story"><span>DISCOVERY / 0041</span><h3>Открыта броня нового поколения</h3><p>Первое полевое испытание изменило баланс сил.</p><b>29.07.2026 →</b></Link>
-      <Link href="/chronicle" className="side-story"><span>CONFLICT / 0012</span><h3>Киборги объявили войну эльфам</h3><b>ЧИТАТЬ →</b></Link>
+    <section className="home-news empty-news">
+      <div><p className="kicker">LIVE WORLD RECORD</p><h2>ХРОНИКА<br />ЖДЁТ ВАС</h2></div>
+      <article className="no-news"><span>АРХИВ / 0000</span><h3>ПОКА НОВОСТЕЙ НЕТ</h3><p>Но первая новость уже может начаться с вашего решения. Играйте, исследуйте, основывайте города — и события сервера появятся здесь.</p><Link href="/login">ВОЙТИ В ИСТОРИЮ ↗</Link></article>
+      <aside className="example-news"><span>КАК ЭТО БУДЕТ ВЫГЛЯДЕТЬ</span><p>Открытие новой брони</p><p>Основание государства</p><p>Начало большой войны</p><small>Примеры, не реальные события</small></aside>
     </section>
     <FluxFooter />
   </main>;
