@@ -4,11 +4,24 @@ import Link from "next/link";
 import { useState } from "react";
 
 const nav = [
-  ["/world", "Мир"],
-  ["/nations", "Государства"],
-  ["/chronicle", "Хроника"],
-  ["/creators", "Авторы"],
+  ["/world", "Мир", "world"],
+  ["/nations", "Государства", "states"],
+  ["/chronicle", "Хроника", "chronicle"],
+  ["/creators", "Авторы", "authors"],
 ];
+
+function NavItem({ href, label, type, index }: { href:string; label:string; type:string; index:number }) {
+  return <Link className={`nav-item nav-${type}`} href={href}>
+    <span className="nav-label"><sup>0{index}</sup>{label}</span>
+    <span className="nav-shape" aria-hidden="true" />
+    <span className="nav-decoration" aria-hidden="true">
+      {type === "world" && <><i/><i/><i/><i/><b/><b/></>}
+      {type === "states" && <><i/><i/><i/><i/><i/><i/></>}
+      {type === "chronicle" && <><i/><i/><i/><i/></>}
+      {type === "authors" && <svg viewBox="0 0 100 34" preserveAspectRatio="none"><path d="M3 24 C18 7,17 30,31 14 S44 28,55 12 C59 5,59 29,67 20 S78 11,84 19 C89 25,94 17,98 14"/></svg>}
+    </span>
+  </Link>;
+}
 
 export function SiteHeader({ light = false }: { light?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -24,7 +37,7 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
       <Link className="brand" href="/"><b>N</b><span>NEXUS<small>SEASON II</small></span></Link>
       <button className="menu-button" onClick={() => setOpen(!open)} aria-label="Открыть меню">MENU</button>
       <nav className={open ? "nav open" : "nav"}>
-        {nav.map(([href, label], i) => <Link key={href} href={href}><sup>0{i + 1}</sup>{label}</Link>)}
+        {nav.map(([href, label, type], i) => <NavItem key={href} href={href} label={label} type={type} index={i + 1} />)}
       </nav>
       <div className="header-actions"><button className="lang" onClick={toggleLanguage}>{language === "ru" ? "RU / EN" : "EN / RU"}</button><Link href="/login">ВОЙТИ ↗</Link></div>
     </header>
