@@ -2,10 +2,10 @@ import Link from "next/link";
 import { FluxFooter, SiteHeader } from "../components";
 
 const regions = [
-  ["01", "Тихая низина", "nexus-lake.png"],
-  ["02", "Золотые поля", "nexus-fields.png"],
-  ["03", "Северная долина", "nexus-valley.png"],
-  ["04", "Белая река", "nexus-river.png"],
+  ["01", "Тихая низина", "world-shore-hd.png"],
+  ["02", "Золотые поля", "world-lighthouse-hd.png"],
+  ["03", "Северная долина", "world-valley-hd.png"],
+  ["04", "Белая река", "world-coast-hd.png"],
 ];
 
 export default function WorldPage() {

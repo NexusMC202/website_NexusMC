@@ -5,7 +5,12 @@ export default function Home() {
   return <main>
     <section className="home-hero">
       <SiteHeader light />
-      <div className="home-photo" />
+      <div className="home-photo" aria-hidden="true">
+        <span className="hero-slide hero-slide-night" />
+        <span className="hero-slide hero-slide-shore" />
+        <span className="hero-slide hero-slide-valley" />
+        <span className="hero-slide hero-slide-lighthouse" />
+      </div>
       <div className="home-copy">
         <p>NEOFORGE 1.21.1 · SEASON II</p>
         <h1>NE<span>X</span>US</h1>

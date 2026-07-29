@@ -6,7 +6,7 @@ const places = [
   ["03 / ТОРГОВЫЙ КВАРТАЛ", "Дождевой переулок", "city-rain.png"],
   ["04 / СТАРЫЙ ГОРОД", "Красные крыши", "city-roofs.jpg"],
   ["05 / СТАНЦИЯ", "Лесной рубеж", "city-station.png"],
-  ["06 / СТОЛИЦА", "Осенний совет", "city-capital.jpg"],
+  ["06 / СТОЛИЦА", "Осенний совет", "city-mansion-hd.png"],
 ];
 
 export default function NationsPage() {
