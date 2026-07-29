@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const nav = [
   ["/world", "Мир", "world"],
@@ -26,6 +26,19 @@ function NavItem({ href, label, type, index }: { href:string; label:string; type
 export function SiteHeader({ light = false }: { light?: boolean }) {
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState("ru");
+  const [profile, setProfile] = useState<{ minecraftNick: string } | null>(null);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/auth/session", { cache: "no-store" })
+      .then(response => response.ok ? response.json() : null)
+      .then((result: { authenticated?: boolean; user?: { minecraftNick?: string } } | null) => {
+        if (active && result?.authenticated && result.user?.minecraftNick) {
+          setProfile({ minecraftNick: result.user.minecraftNick });
+        }
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, []);
   function toggleLanguage() {
     const next = language === "ru" ? "en" : "ru";
     setLanguage(next);
@@ -39,7 +52,7 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
       <nav className={open ? "nav open" : "nav"}>
         {nav.map(([href, label, type], i) => <NavItem key={href} href={href} label={label} type={type} index={i + 1} />)}
       </nav>
-      <div className="header-actions"><button className="lang" onClick={toggleLanguage}>{language === "ru" ? "RU / EN" : "EN / RU"}</button><Link href="/login">ВОЙТИ ↗</Link></div>
+      <div className="header-actions"><button className="lang" onClick={toggleLanguage}>{language === "ru" ? "RU / EN" : "EN / RU"}</button>{profile ? <Link className="profile-link" href="/profile"><span>{profile.minecraftNick}</span> ПРОФИЛЬ ↗</Link> : <Link href="/login">ВОЙТИ ↗</Link>}</div>
     </header>
   );
 }
