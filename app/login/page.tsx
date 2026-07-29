@@ -31,7 +31,9 @@ export default function LoginPage() {
     <form className="login-panel" onSubmit={submit}>
       <div className="form-mode"><button type="button" className={mode==="login"?"active":""} onClick={()=>setMode("login")}>ВХОД</button><button type="button" className={mode==="register"?"active":""} onClick={()=>setMode("register")}>РЕГИСТРАЦИЯ</button></div>
       {mode === "register" && <><label htmlFor="minecraftNick">НИК В MINECRAFT</label><input id="minecraftNick" name="minecraftNick" required minLength={3} placeholder="Steve" /></>}
-      <label htmlFor="email">ЭЛЕКТРОННАЯ ПОЧТА</label><input id="email" name="email" type="email" required placeholder="you@example.com"/>
+      {mode === "login"
+        ? <><label htmlFor="identifier">НИК ИЛИ ЭЛЕКТРОННАЯ ПОЧТА</label><input id="identifier" name="identifier" required autoComplete="username" placeholder="Steve или you@example.com"/></>
+        : <><label htmlFor="email">ЭЛЕКТРОННАЯ ПОЧТА</label><input id="email" name="email" type="email" required autoComplete="email" placeholder="you@example.com"/></>}
       <label htmlFor="password">ПАРОЛЬ</label><input id="password" name="password" type="password" required minLength={8} placeholder="Минимум 8 символов"/>
       {error && <p className="form-error">{error}</p>}
       <button className="auth-submit" disabled={busy}>{busy ? "ПОДОЖДИТЕ…" : mode === "login" ? "ВОЙТИ В NEXUS →" : "СОЗДАТЬ АККАУНТ →"}</button>

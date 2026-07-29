@@ -21,6 +21,7 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, minecraft_nick TEXT NOT NULL, password_hash TEXT NOT NULL, password_salt TEXT NOT NULL, created_at INTEGER NOT NULL)"),
     db.prepare("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, remaining_entries INTEGER NOT NULL DEFAULT 2, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
     db.prepare("CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions(user_id)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS users_minecraft_nick_idx ON users(minecraft_nick COLLATE NOCASE)"),
   ]);
 }
 
