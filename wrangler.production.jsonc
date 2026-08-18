@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nexusmc-site",
+  "main": "./dist/server/index.js",
+  "compatibility_date": "2026-08-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "no_bundle": true,
+  "rules": [
+    {
+      "type": "ESModule",
+      "globs": ["**/*.js"]
+    }
+  ],
+  "assets": {
+    "directory": "./dist/client"
+  },
+  "routes": [
+    {
+      "pattern": "nexusmc.flux-productions.com",
+      "custom_domain": true
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nexusmc",
+      "database_id": "ebbbe61c-0e71-44ca-9f20-2dd92c120237",
+      "migrations_dir": "./drizzle"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "SKINS",
+      "bucket_name": "site-creator-r2"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
