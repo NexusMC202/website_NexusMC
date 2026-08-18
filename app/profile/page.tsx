@@ -48,7 +48,7 @@ export default function ProfilePage() {
           {message && <small>{message}</small>}
         </div>
         <div className="profile-data"><span>АКТИВНЫЙ ИГРОК</span><h2>{profile.minecraftNick}</h2><dl>
-          <div><dt>УЧЁТНАЯ ЗАПИСЬ</dt><dd>{profile.email.endsWith(".invalid") ? "Telegram ID" : profile.email}</dd></div>
+          <div><dt>ПОДТВЕРЖДЁННАЯ ПОЧТА</dt><dd>{profile.email}</dd></div>
           <div><dt>ДОСТУПНЫЕ МИРЫ</dt><dd>GEARMORPH · AURION</dd></div>
           <div><dt>СКИН</dt><dd>{profile.skinUrl ? "УСТАНОВЛЕН" : "НЕ УСТАНОВЛЕН"}</dd></div>
         </dl><div className="profile-actions"><Link href="/#worlds">ВЫБРАТЬ МИР →</Link><button onClick={logout}>ВЫЙТИ</button></div></div>

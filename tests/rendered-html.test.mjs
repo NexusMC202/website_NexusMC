@@ -20,3 +20,14 @@ test("registration and profile support player skins", async () => {
   assert.match(api, /width !== 64/);
   assert.match(api, /env\.SKINS\.put/);
 });
+
+test("registration uses email verification and has no Telegram flow", async () => {
+  const [login, requestCode] = await Promise.all([
+    readFile("app/login/page.tsx", "utf8"),
+    readFile("app/api/auth/email/request-code/route.ts", "utf8"),
+  ]);
+  assert.doesNotMatch(login, /Telegram|telegram|TG \+ НИК/);
+  assert.match(login, /verificationCode/);
+  assert.match(requestCode, /padStart\(6/);
+  assert.match(requestCode, /600_000/);
+});

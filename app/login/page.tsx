@@ -1,63 +1,54 @@
 "use client";
-import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
 
-type Mode = "telegram" | "login" | "register";
-type TelegramChallenge = {
-  challengeId: string;
-  code: string;
-  botUrl: string;
-};
+import Link from "next/link";
+import { FormEvent, useState } from "react";
+
+type Mode = "login" | "register";
 
 export default function LoginPage() {
-  const [mode, setMode] = useState<Mode>("telegram");
+  const [mode, setMode] = useState<Mode>("register");
+  const [challengeId, setChallengeId] = useState("");
+  const [pendingForm, setPendingForm] = useState<FormData | null>(null);
+  const [pendingEmail, setPendingEmail] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [challenge, setChallenge] = useState<TelegramChallenge | null>(null);
 
-  useEffect(() => {
-    if (!challenge) return;
-    const interval = window.setInterval(async () => {
-      const response = await fetch("/api/auth/telegram/status", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ challengeId: challenge.challengeId }),
-      });
-      const result = await response.json() as { status?: string };
-      if (result.status === "authenticated") {
-        window.clearInterval(interval);
-        sessionStorage.setItem("nexus-session-counted", "1");
-        window.location.href = "/";
-      } else if (response.status === 410 || result.status === "expired") {
-        window.clearInterval(interval);
-        setChallenge(null);
-        setError("Код истёк. Создайте новый.");
-      }
-    }, 2000);
-    return () => window.clearInterval(interval);
-  }, [challenge]);
+  function switchMode(next: Mode) {
+    setMode(next); setChallengeId(""); setPendingForm(null); setPendingEmail(""); setError("");
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setBusy(true);
-    setError("");
+    event.preventDefault(); setBusy(true); setError("");
     const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData);
-    const endpoint = mode === "telegram" ? "/api/auth/telegram/start" : `/api/auth/${mode}`;
-    const response = await fetch(endpoint, {
-      method: "POST",
-      ...(mode === "register" ? {} : { headers: { "content-type": "application/json" } }),
-      body: mode === "register" ? formData : JSON.stringify(data),
-    });
-    const result = await response.json() as TelegramChallenge & { error?: string };
-    setBusy(false);
-    if (!response.ok) return setError(result.error ?? "Не удалось продолжить.");
-    if (mode === "telegram") {
-      setChallenge(result);
+    if (mode === "register" && !challengeId) {
+      const email = String(formData.get("email") ?? "");
+      const response = await fetch("/api/auth/email/request-code", {
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }),
+      });
+      const result = await response.json() as { error?: string; challengeId?: string; email?: string };
+      setBusy(false);
+      if (!response.ok || !result.challengeId) return setError(result.error ?? "Не удалось отправить код.");
+      setPendingForm(formData); setChallengeId(result.challengeId); setPendingEmail(result.email ?? email);
       return;
     }
-    sessionStorage.setItem("nexus-session-counted", "1");
-    window.location.href = "/";
+    const response = mode === "login"
+      ? await fetch("/api/auth/login", {
+          method: "POST", headers: { "content-type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(formData)),
+        })
+      : await fetch("/api/auth/register", {
+          method: "POST",
+          body: (() => {
+            const registration = pendingForm ?? formData;
+            registration.set("challengeId", challengeId);
+            registration.set("verificationCode", String(formData.get("verificationCode") ?? ""));
+            return registration;
+          })(),
+        });
+    const result = await response.json() as { error?: string };
+    setBusy(false);
+    if (!response.ok) return setError(result.error ?? "Не удалось продолжить.");
+    window.location.href = "/profile";
   }
 
   return <main className="login-page path-login">
@@ -65,64 +56,50 @@ export default function LoginPage() {
     <section className="identity-choice">
       <p>IDENTITY GATE / PLAYER ACCESS</p>
       <h1>{mode === "register" ? <>НАЧАТЬ<br />ПУТЬ</> : <>СНОВА<br />В NEXUS</>}</h1>
-      <div className="choice-tabs">
-        <button className={mode === "telegram" ? "active" : ""} onClick={() => { setMode("telegram"); setChallenge(null); setError(""); }}>
-          <b>Уже играете на сервере?</b>
-          <span>Подтвердите привязанный Minecraft-ник через @nexusmcabot — пароль не нужен.</span>
+      <div className="choice-tabs choice-tabs-email">
+        <button className={mode === "register" ? "active" : ""} onClick={() => switchMode("register")}>
+          <b>Новый игрок</b><span>Создайте единый аккаунт NEXUS и подтвердите почту шестизначным кодом.</span>
         </button>
-        <button className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setChallenge(null); setError(""); }}>
-          <b>Ещё не играете, но вам интересно?</b>
-          <span>Создайте новый аккаунт и познакомьтесь с Nexus.</span>
+        <button className={mode === "login" ? "active" : ""} onClick={() => switchMode("login")}>
+          <b>Уже есть аккаунт</b><span>Войдите по Minecraft-нику или электронной почте.</span>
         </button>
       </div>
     </section>
 
     <form className="login-panel" onSubmit={submit}>
-      <div className="form-mode form-mode-three">
-        <button type="button" className={mode === "telegram" ? "active" : ""} onClick={() => { setMode("telegram"); setChallenge(null); setError(""); }}>TG + НИК</button>
-        <button type="button" className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setChallenge(null); setError(""); }}>ПОЧТА</button>
-        <button type="button" className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setChallenge(null); setError(""); }}>РЕГИСТРАЦИЯ</button>
+      <div className="form-mode form-mode-email">
+        <button type="button" className={mode === "register" ? "active" : ""} onClick={() => switchMode("register")}>РЕГИСТРАЦИЯ</button>
+        <button type="button" className={mode === "login" ? "active" : ""} onClick={() => switchMode("login")}>ВХОД</button>
       </div>
-
-      {mode === "telegram" && !challenge && <>
-        <label htmlFor="minecraftNick">НИК В MINECRAFT</label>
-        <input id="minecraftNick" name="minecraftNick" required minLength={3} maxLength={16} autoComplete="username" placeholder="Steve" />
-        <p className="telegram-hint">Работает только для ника, уже привязанного к вашему Telegram в NexusBot.</p>
-      </>}
-
-      {mode === "telegram" && challenge && <div className="telegram-challenge" aria-live="polite">
-        <span>ОДНОРАЗОВЫЙ КОД</span>
-        <strong>{challenge.code}</strong>
-        <p>Откройте бота и подтвердите вход. Код действует 10 минут.</p>
-        <a className="telegram-open" href={challenge.botUrl} target="_blank" rel="noreferrer">ОТКРЫТЬ @NEXUSMCABOT ↗</a>
-        <small>Или отправьте боту: <code>/site {challenge.code}</code></small>
-        <i>Ожидаем подтверждение…</i>
-      </div>}
-
       {mode === "login" && <>
         <label htmlFor="identifier">НИК ИЛИ ЭЛЕКТРОННАЯ ПОЧТА</label>
         <input id="identifier" name="identifier" required autoComplete="username" placeholder="Steve или you@example.com" />
-        <label htmlFor="password">ПАРОЛЬ САЙТА</label>
-        <input id="password" name="password" type="password" required minLength={8} autoComplete="current-password" placeholder="Минимум 8 символов" />
+        <label htmlFor="password">ПАРОЛЬ</label>
+        <input id="password" name="password" type="password" required minLength={8} autoComplete="current-password" />
       </>}
-
-      {mode === "register" && <>
+      {mode === "register" && !challengeId && <>
         <label htmlFor="registerNick">НИК В MINECRAFT</label>
-        <input id="registerNick" name="minecraftNick" required minLength={3} maxLength={16} placeholder="Steve" />
+        <input id="registerNick" name="minecraftNick" required minLength={3} maxLength={16} pattern="[A-Za-z0-9_]{3,16}" placeholder="Steve" />
         <label htmlFor="email">ЭЛЕКТРОННАЯ ПОЧТА</label>
         <input id="email" name="email" type="email" required autoComplete="email" placeholder="you@example.com" />
-        <label htmlFor="registerPassword">ПАРОЛЬ САЙТА</label>
+        <label htmlFor="registerPassword">ПАРОЛЬ</label>
         <input id="registerPassword" name="password" type="password" required minLength={8} autoComplete="new-password" placeholder="Минимум 8 символов" />
         <label htmlFor="skin">СКИН ПЕРСОНАЖА <span className="optional-label">НЕОБЯЗАТЕЛЬНО</span></label>
-        <label className="skin-drop" htmlFor="skin"><b>ЗАГРУЗИТЬ PNG-СКИН</b><span>64×64 или классический 64×32 · до 2 МБ</span></label>
+        <label className="skin-drop" htmlFor="skin"><b>ЗАГРУЗИТЬ PNG-СКИН</b><span>64×64 или 64×32 · до 2 МБ</span></label>
         <input className="skin-file" id="skin" name="skin" type="file" accept="image/png" />
       </>}
-
+      {mode === "register" && challengeId && <div className="email-code-step">
+        <span>ПИСЬМО ОТПРАВЛЕНО</span><h2>{pendingEmail}</h2>
+        <p>Введите шесть цифр из письма. Код действует 10 минут.</p>
+        <label htmlFor="verificationCode">КОД ПОДТВЕРЖДЕНИЯ</label>
+        <input id="verificationCode" name="verificationCode" className="verification-code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required placeholder="000000" />
+        <button type="button" className="change-email" onClick={() => { setChallengeId(""); setPendingForm(null); }}>ИЗМЕНИТЬ ПОЧТУ</button>
+      </div>}
       {error && <p className="form-error">{error}</p>}
-      {!challenge && <button className="auth-submit" disabled={busy}>
-        {busy ? "ПОДОЖДИТЕ…" : mode === "telegram" ? "ПОЛУЧИТЬ КОД →" : mode === "login" ? "ВОЙТИ В NEXUS →" : "СОЗДАТЬ АККАУНТ →"}
-      </button>}
-      <p className="session-note">Игровой пароль никогда не передаётся сайту. Подтверждение выполняется вашим Telegram-аккаунтом.</p>
+      <button className="auth-submit" disabled={busy}>
+        {busy ? "ПОДОЖДИТЕ…" : mode === "login" ? "ВОЙТИ В NEXUS →" : challengeId ? "ПОДТВЕРДИТЬ И СОЗДАТЬ →" : "ПОЛУЧИТЬ 6-ЗНАЧНЫЙ КОД →"}
+      </button>
+      <p className="session-note">Код отправляется только на указанную электронную почту. Никому не сообщайте его.</p>
     </form>
   </main>;
 }

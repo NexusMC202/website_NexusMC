@@ -22,16 +22,19 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, remaining_entries INTEGER NOT NULL DEFAULT 2, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
     db.prepare("CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions(user_id)"),
     db.prepare("CREATE INDEX IF NOT EXISTS users_minecraft_nick_idx ON users(minecraft_nick COLLATE NOCASE)"),
-    db.prepare("CREATE TABLE IF NOT EXISTS telegram_login_challenges (id TEXT PRIMARY KEY, code_hash TEXT NOT NULL UNIQUE, minecraft_nick TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending', telegram_id TEXT, user_id TEXT, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, confirmed_at INTEGER)"),
-    db.prepare("CREATE INDEX IF NOT EXISTS telegram_login_challenges_nick_idx ON telegram_login_challenges(minecraft_nick COLLATE NOCASE)"),
-    db.prepare("CREATE INDEX IF NOT EXISTS telegram_login_challenges_expiry_idx ON telegram_login_challenges(expires_at)"),
-    db.prepare("CREATE TABLE IF NOT EXISTS telegram_links (telegram_id TEXT PRIMARY KEY, user_id TEXT NOT NULL UNIQUE, minecraft_nick TEXT NOT NULL, linked_at INTEGER NOT NULL)"),
-    db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS telegram_links_nick_idx ON telegram_links(minecraft_nick COLLATE NOCASE)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS email_verification_codes (id TEXT PRIMARY KEY, email TEXT NOT NULL, code_hash TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
+    db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS email_verification_codes_email_idx ON email_verification_codes(email COLLATE NOCASE)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS email_verification_codes_expiry_idx ON email_verification_codes(expires_at)"),
   ]);
   const columns = await db.prepare("PRAGMA table_info(users)").all<{ name: string }>();
   if (!columns.results.some(column => column.name === "skin_key")) {
     await db.prepare("ALTER TABLE users ADD COLUMN skin_key TEXT").run();
   }
+}
+
+export async function hashVerificationCode(challengeId: string, code: string) {
+  const digest = await crypto.subtle.digest("SHA-256", encoder.encode(`${challengeId}:${code}`));
+  return bytesToHex(new Uint8Array(digest));
 }
 
 export async function authenticatedUser(request: Request) {
