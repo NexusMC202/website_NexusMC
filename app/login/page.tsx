@@ -22,13 +22,18 @@ export default function LoginPage() {
     const formData = new FormData(event.currentTarget);
     if (mode === "register" && !challengeId) {
       const email = String(formData.get("email") ?? "");
-      const response = await fetch("/api/auth/email/request-code", {
-        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }),
-      });
-      const result = await response.json() as { error?: string; challengeId?: string; email?: string };
-      setBusy(false);
-      if (!response.ok || !result.challengeId) return setError(result.error ?? "Не удалось отправить код.");
-      setPendingForm(formData); setChallengeId(result.challengeId); setPendingEmail(result.email ?? email);
+      try {
+        const response = await fetch("/api/auth/email/request-code", {
+          method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }),
+        });
+        const result = await response.json() as { error?: string; challengeId?: string; email?: string };
+        if (!response.ok || !result.challengeId) return setError(result.error ?? "Не удалось отправить код.");
+        setPendingForm(formData); setChallengeId(result.challengeId); setPendingEmail(result.email ?? email);
+      } catch {
+        setError("Не удалось связаться с сервером. Проверьте интернет и попробуйте снова.");
+      } finally {
+        setBusy(false);
+      }
       return;
     }
     const response = mode === "login"
@@ -84,12 +89,10 @@ export default function LoginPage() {
         <input id="email" name="email" type="email" required autoComplete="email" placeholder="you@example.com" />
         <label htmlFor="registerPassword">ПАРОЛЬ</label>
         <input id="registerPassword" name="password" type="password" required minLength={8} autoComplete="new-password" placeholder="Минимум 8 символов" />
-        <label htmlFor="skin">СКИН ПЕРСОНАЖА <span className="optional-label">НЕОБЯЗАТЕЛЬНО</span></label>
-        <label className="skin-drop" htmlFor="skin"><b>ЗАГРУЗИТЬ PNG-СКИН</b><span>64×64 или 64×32 · до 2 МБ</span></label>
-        <input className="skin-file" id="skin" name="skin" type="file" accept="image/png" />
+        <p className="registration-skin-note">СКИН УСТАНАВЛИВАЕТСЯ ПОСЛЕ РЕГИСТРАЦИИ В ЛИЧНОМ ПРОФИЛЕ</p>
       </>}
       {mode === "register" && challengeId && <div className="email-code-step">
-        <span>ПИСЬМО ОТПРАВЛЕНО</span><h2>{pendingEmail}</h2>
+        <span className="email-code-success">✓ КОД ОТПРАВЛЕН</span><h2>{pendingEmail}</h2>
         <p>Введите шесть цифр из письма. Код действует 10 минут.</p>
         <label htmlFor="verificationCode">КОД ПОДТВЕРЖДЕНИЯ</label>
         <input id="verificationCode" name="verificationCode" className="verification-code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required placeholder="000000" />

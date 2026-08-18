@@ -9,13 +9,14 @@ test("home presents both official NEXUS worlds", async () => {
   assert.match(source, /СОЗДАТЬ АККАУНТ/);
 });
 
-test("registration and profile support player skins", async () => {
+test("player skins are managed only from the profile", async () => {
   const [login, profile, api] = await Promise.all([
     readFile("app/login/page.tsx", "utf8"),
     readFile("app/profile/page.tsx", "utf8"),
     readFile("app/api/profile/skin/route.ts", "utf8"),
   ]);
-  assert.match(login, /accept="image\/png"/);
+  assert.doesNotMatch(login, /accept="image\/png"/);
+  assert.match(login, /СКИН УСТАНАВЛИВАЕТСЯ ПОСЛЕ РЕГИСТРАЦИИ/);
   assert.match(profile, /ЗАМЕНИТЬ СКИН/);
   assert.match(api, /width !== 64/);
   assert.match(api, /env\.SKINS\.put/);

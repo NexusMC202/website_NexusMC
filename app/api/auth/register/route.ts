@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { ensureAuthTables, hashPassword, hashVerificationCode, sessionCookie, validateMinecraftSkin } from "../../../../db/auth";
+import { ensureAuthTables, hashPassword, hashVerificationCode, sessionCookie } from "../../../../db/auth";
 
 export async function POST(request: Request) {
   await ensureAuthTables();
@@ -10,7 +10,6 @@ export async function POST(request: Request) {
   const minecraftNick = String(payload instanceof FormData ? payload.get("minecraftNick") ?? "" : payload.minecraftNick ?? "");
   const challengeId = String(payload instanceof FormData ? payload.get("challengeId") ?? "" : payload.challengeId ?? "");
   const verificationCode = String(payload instanceof FormData ? payload.get("verificationCode") ?? "" : payload.verificationCode ?? "");
-  const skin = payload instanceof FormData ? payload.get("skin") : null;
   const cleanEmail = email?.trim().toLowerCase();
   const cleanNick = minecraftNick?.trim();
   if (!cleanEmail || !cleanNick || !/^[A-Za-z0-9_]{3,16}$/.test(cleanNick) || !password || password.length < 8) {
@@ -38,21 +37,8 @@ export async function POST(request: Request) {
   }
   const id = crypto.randomUUID();
   const secured = await hashPassword(password);
-  let skinKey: string | null = null;
-  if (skin instanceof File && skin.size) {
-    if (!validateMinecraftSkin(skin)) return Response.json({ error: "Скин должен быть PNG-файлом размером до 2 МБ." }, { status: 400 });
-    const skinBytes = new Uint8Array(await skin.arrayBuffer());
-    const skinView = new DataView(skinBytes.buffer);
-    const width = skinView.getUint32(16);
-    const height = skinView.getUint32(20);
-    if (width !== 64 || (height !== 64 && height !== 32)) {
-      return Response.json({ error: "Размер скина должен быть 64×64 или 64×32 пикселя." }, { status: 400 });
-    }
-    skinKey = `skins/${id}.png`;
-    await env.SKINS.put(skinKey, skinBytes, { httpMetadata: { contentType: "image/png" } });
-  }
   await env.DB.prepare("INSERT INTO users (id,email,minecraft_nick,password_hash,password_salt,created_at,skin_key) VALUES (?,?,?,?,?,?,?)")
-    .bind(id, cleanEmail, cleanNick, secured.hash, secured.salt, Date.now(), skinKey).run();
+    .bind(id, cleanEmail, cleanNick, secured.hash, secured.salt, Date.now(), null).run();
   await env.DB.prepare("DELETE FROM email_verification_codes WHERE id=?").bind(challengeId).run();
   const session = crypto.randomUUID();
   await env.DB.prepare("INSERT INTO sessions (id,user_id,remaining_entries,expires_at,created_at) VALUES (?,?,?,?,?)")
