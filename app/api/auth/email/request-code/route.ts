@@ -15,7 +15,11 @@ export async function POST(request: Request) {
   if (recent && Date.now() - Number(recent.created_at) < 60_000) {
     return Response.json({ error: "Новый код можно запросить через минуту." }, { status: 429 });
   }
-  const apiKey = (env as unknown as { RESEND_API_KEY?: string }).RESEND_API_KEY;
+  // Sites exposes runtime secrets through process.env; direct Cloudflare builds
+  // expose them as Worker bindings. Supporting both keeps the same source valid
+  // in production and in the local Wrangler environment.
+  const apiKey = process.env.RESEND_API_KEY
+    ?? (env as unknown as { RESEND_API_KEY?: string }).RESEND_API_KEY;
   if (!apiKey) return Response.json({ error: "Отправка писем ещё не подключена администратором." }, { status: 503 });
   const challengeId = crypto.randomUUID();
   const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
