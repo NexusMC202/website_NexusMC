@@ -1,6 +1,6 @@
 # website_NexusMC
 
-Official website for NEXUS Season II, a Flux Production project.
+Official website for the NEXUS launcher and Minecraft network by ForceCore Inc.
 
 ## Local development
 

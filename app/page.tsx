@@ -7,7 +7,7 @@ export default function Home() {
       <SiteHeader />
       <div className="reform-noise" />
       <div className="reform-copy">
-        <p className="reform-kicker">FLUX PRODUCTION / MINECRAFT NETWORK</p>
+        <p className="reform-kicker">FORCECORE INC. / MINECRAFT NETWORK</p>
         <h1>ДВА МИРА.<br /><span>ОДНА ИСТОРИЯ.</span></h1>
         <p className="reform-lead">GEARMORPH — технологическое выживание на NeoForge.<br />AURION — творческий строительный мир на Fabric.</p>
         <div className="reform-actions"><Link href="/login">СОЗДАТЬ АККАУНТ</Link><a href="#worlds">ВЫБРАТЬ МИР ↓</a></div>

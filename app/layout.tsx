@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s — NEXUS",
   },
   description:
-    "NEXUS — сеть Minecraft-миров GEARMORPH и AURION от Flux Production.",
+    "NEXUS — лаунчер и сеть Minecraft-миров GEARMORPH и AURION от ForceCore Inc.",
   icons: {
     icon: [
       { url: "/favicon.ico?v=3", type: "image/x-icon", sizes: "32x32" },

@@ -94,7 +94,7 @@ export function FluxFooter() {
   return (
     <footer className="flux-footer">
       <p>СЕТЬ МИРОВ</p><h2>NE<span>X</span>US</h2>
-      <div><span>© 2026 FLUX PRODUCTION</span><a href="https://discord.gg/7f2XJXGCwA">DISCORD ↗</a><a href="https://t.me/+UtquhK9n3kdjZGMy">TELEGRAM ↗</a></div>
+      <div><span>© 2026 FORCECORE INC.</span><a href="https://discord.gg/7f2XJXGCwA">DISCORD ↗</a><a href="https://t.me/+UtquhK9n3kdjZGMy">TELEGRAM ↗</a></div>
     </footer>
   );
 }

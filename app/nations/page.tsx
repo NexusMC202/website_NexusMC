@@ -17,7 +17,7 @@ export default function NationsPage() {
     </section>
     <section className="nation-catalog">
       <header><p>VISUAL CONCEPT ARCHIVE</p><h2>АРХИТЕКТУРА<br /><span className="editorial-word">мира</span></h2><span>6 визуальных направлений</span></header>
-      <div className="legal-note"><b>ВАЖНО</b><p>Эти изображения используются только как визуальные референсы. На них не показаны настоящие города сервера NexusMC. Изображения не принадлежат NexusMC или Flux Production, и проект не заявляет авторских прав на них.</p></div>
+      <div className="legal-note"><b>ВАЖНО</b><p>Эти изображения используются только как визуальные референсы. На них не показаны настоящие города сервера NexusMC. Изображения не принадлежат NexusMC или ForceCore Inc., и проект не заявляет авторских прав на них.</p></div>
       <div className="city-grid">{places.map(([meta,title,img])=><article key={title} style={{backgroundImage:`linear-gradient(0deg,rgba(5,8,8,.92),transparent 70%),url('/${img}')`}}><span>{meta}</span><h3>{title}</h3><small>КОНЦЕПТ · НЕ ИГРОВОЙ ГОРОД</small></article>)}</div>
     </section><FluxFooter />
   </main>;
