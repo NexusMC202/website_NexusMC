@@ -28,6 +28,23 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS telegram_links (telegram_id TEXT PRIMARY KEY, user_id TEXT NOT NULL UNIQUE, minecraft_nick TEXT NOT NULL, linked_at INTEGER NOT NULL)"),
     db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS telegram_links_nick_idx ON telegram_links(minecraft_nick COLLATE NOCASE)"),
   ]);
+  const columns = await db.prepare("PRAGMA table_info(users)").all<{ name: string }>();
+  if (!columns.results.some(column => column.name === "skin_key")) {
+    await db.prepare("ALTER TABLE users ADD COLUMN skin_key TEXT").run();
+  }
+}
+
+export async function authenticatedUser(request: Request) {
+  const sessionId = readSessionId(request);
+  if (!sessionId) return null;
+  return env.DB.prepare(
+    "SELECT users.id,users.email,users.minecraft_nick,users.skin_key FROM sessions JOIN users ON users.id=sessions.user_id WHERE sessions.id=? AND sessions.expires_at>? AND sessions.remaining_entries>0"
+  ).bind(sessionId, Date.now()).first<Record<string, string>>();
+}
+
+export function validateMinecraftSkin(file: File) {
+  if (file.type !== "image/png" || file.size < 24 || file.size > 2 * 1024 * 1024) return false;
+  return true;
 }
 
 export function sessionCookie(id: string, maxAge = 60 * 60 * 24 * 30) {

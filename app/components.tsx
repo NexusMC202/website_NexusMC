@@ -47,7 +47,7 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
   }
   return (
     <header className={`site-header ${light ? "light" : ""}`}>
-      <Link className="brand" href="/"><b>N</b><span>NEXUS<small>SEASON II</small></span></Link>
+      <Link className="brand" href="/"><b>N</b><span>NEXUS<small>GEARMORPH · AURION</small></span></Link>
       <button className="menu-button" onClick={() => setOpen(!open)} aria-label="Открыть меню">MENU</button>
       <nav className={open ? "nav open" : "nav"}>
         {nav.map(([href, label, type], i) => <NavItem key={href} href={href} label={label} type={type} index={i + 1} />)}
@@ -60,11 +60,11 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
 export function ServerStatus() {
   const [copied, setCopied] = useState(false);
   async function copy() {
-    await navigator.clipboard?.writeText("nexus-mc.fun");
+    await navigator.clipboard?.writeText("play.flux-productions.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   }
-  return <button className="server-chip" onClick={copy}><i /><span>СЕРВЕР В СЕТИ<small>{copied ? "IP СКОПИРОВАН" : "nexus-mc.fun"}</small></span><b>7<em>/15</em></b></button>;
+  return <button className="server-chip" onClick={copy}><i /><span>СЕРВЕР В СЕТИ<small>{copied ? "IP СКОПИРОВАН" : "play.flux-productions.com"}</small></span><b>7<em>/15</em></b></button>;
 }
 
 const creators = [
@@ -93,8 +93,8 @@ export function CreatorStack() {
 export function FluxFooter() {
   return (
     <footer className="flux-footer">
-      <p>ПРОЕКТ</p><h2>FLUX<br /><span>PRODUCTION</span></h2>
-      <div><span>© 2026 NEXUS</span><a href="https://discord.gg/7f2XJXGCwA">DISCORD ↗</a><a href="https://t.me/+UtquhK9n3kdjZGMy">TELEGRAM ↗</a></div>
+      <p>СЕТЬ МИРОВ</p><h2>NE<span>X</span>US</h2>
+      <div><span>© 2026 FLUX PRODUCTION</span><a href="https://discord.gg/7f2XJXGCwA">DISCORD ↗</a><a href="https://t.me/+UtquhK9n3kdjZGMy">TELEGRAM ↗</a></div>
     </footer>
   );
 }

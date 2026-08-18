@@ -1,50 +1,38 @@
 import Link from "next/link";
-import { CreatorStack, FluxFooter, ServerStatus, SiteHeader } from "./components";
+import { FluxFooter, SiteHeader } from "./components";
 
 export default function Home() {
-  return <main>
-    <section className="home-hero">
-      <SiteHeader light />
-      <div className="home-photo" aria-hidden="true">
-        <span className="hero-slide hero-slide-night" />
-        <span className="hero-slide hero-slide-shore" />
-        <span className="hero-slide hero-slide-valley" />
-        <span className="hero-slide hero-slide-lighthouse" />
+  return <main className="reform-home">
+    <section className="reform-hero">
+      <SiteHeader />
+      <div className="reform-noise" />
+      <div className="reform-copy">
+        <p className="reform-kicker">FLUX PRODUCTION / MINECRAFT NETWORK</p>
+        <h1>ДВА МИРА.<br /><span>ОДНА ИСТОРИЯ.</span></h1>
+        <p className="reform-lead">GEARMORPH — технологическое выживание на NeoForge.<br />AURION — творческий строительный мир на Fabric.</p>
+        <div className="reform-actions"><Link href="/login">СОЗДАТЬ АККАУНТ</Link><a href="#worlds">ВЫБРАТЬ МИР ↓</a></div>
       </div>
-      <div className="home-copy">
-        <p>NEOFORGE 1.21.1 · SEASON II</p>
-        <h1>NE<span>X</span>US</h1>
-        <h2>ОДНО ЯДРО.<br />БЕСКОНЕЧНЫЕ ВОЗМОЖНОСТИ.</h2>
-        <div className="home-actions"><Link href="/login">ПРИСОЕДИНИТЬСЯ ↗</Link><Link href="/world">ИССЛЕДОВАТЬ МИР →</Link></div>
-      </div>
-      <div className="hero-rail"><span>CREATE</span><span>EXPLORE</span><span>EVOLVE</span><span>UNITE</span></div>
-      <ServerStatus />
-      <p className="vertical-note">NEXUS WORLD TRANSMISSION / 002</p>
+      <div className="reform-mark">N</div>
+      <div className="reform-status"><i /> СЕТЬ NEXUS <b>ONLINE</b></div>
     </section>
 
-    <section className="opening">
-      <p className="kicker">THE SECOND EXPEDITION</p>
-        <h2>ЗДЕСЬ <span className="editorial-word">мир</span><br /><i>ПИШУТ ИГРОКИ.</i></h2>
-      <div className="opening-grid">
-        <p>Наука строит цивилизации. Магия переписывает законы. Союзы и конфликты превращаются в историю, которая остаётся после вас.</p>
-        <ol><li><span>01</span> Исследуй</li><li><span>02</span> Создавай</li><li><span>03</span> Объединяйся</li></ol>
+    <section id="worlds" className="worlds-reform">
+      <header><p>ДОСТУПНЫЕ МИРЫ / 02</p><h2>ВЫБЕРИ СВОЮ<br />РЕАЛЬНОСТЬ</h2></header>
+      <div className="world-reform-grid">
+        <article className="world-reform-card gearmorph">
+          <div className="world-code">01 / NEOFORGE 1.21.1</div>
+          <div><small>ТЕХНОЛОГИИ · ВЫЖИВАНИЕ · ПРОГРЕСС</small><h3>GEARMORPH</h3><p>Мир механизмов, опасных экспедиций и больших промышленных проектов.</p><span>play.flux-productions.com</span></div>
+        </article>
+        <article className="world-reform-card aurion">
+          <div className="world-code">02 / FABRIC 1.21.1</div>
+          <div><small>СТРОИТЕЛЬСТВО · ТВОРЧЕСТВО · СООБЩЕСТВО</small><h3>AURION</h3><p>Строй города, создавай ландшафты и воплощай проекты без границ.</p><span>build.flux-productions.com</span></div>
+        </article>
       </div>
     </section>
 
-    <section className="landscape-strip">
-      <div className="landscape-title"><small>WORLD / 01</small><h2>ВЫЙТИ<br />ЗА ГРАНИЦЫ</h2><Link href="/world">ОТКРЫТЬ АТЛАС ↗</Link></div>
-      <div className="landscape-count"><b>05</b><span>УНИКАЛЬНЫХ<br />РЕГИОНОВ</span></div>
-    </section>
-
-    <section className="home-creators">
-      <div className="creator-heading"><p className="kicker">CREATOR TRANSMISSIONS</p><h2>ИСТОРИИ<br /><i>СООБЩЕСТВА</i></h2><p>Наведи на лист и выбери автора. Лучшие ролики, стримы и хроники игроков живут здесь.</p></div>
-      <CreatorStack />
-    </section>
-
-    <section className="home-news empty-news">
-      <div><p className="kicker">LIVE WORLD RECORD</p><h2>ХРОНИКА<br />ЖДЁТ ВАС</h2></div>
-      <article className="no-news"><span>АРХИВ / 0000</span><h3>ПОКА НОВОСТЕЙ НЕТ</h3><p>Но первая новость уже может начаться с вашего решения. Играйте, исследуйте, основывайте города — и события сервера появятся здесь.</p><Link href="/login">ВОЙТИ В ИСТОРИЮ ↗</Link></article>
-      <aside className="example-news"><span>КАК ЭТО БУДЕТ ВЫГЛЯДЕТЬ</span><p>Открытие новой брони</p><p>Основание государства</p><p>Начало большой войны</p><small>Примеры, не реальные события</small></aside>
+    <section className="identity-reform">
+      <div><p>PLAYER IDENTITY</p><h2>ТВОЙ НИК.<br />ТВОЙ СКИН.<br /><span>ТВОЯ ЛЕГЕНДА.</span></h2></div>
+      <div className="identity-panel"><b>01</b><p>Зарегистрируй единый аккаунт NEXUS</p><b>02</b><p>Установи собственный Minecraft-скин</p><b>03</b><p>Выбери сервер в лаунчере и начинай игру</p><Link href="/login">РЕГИСТРАЦИЯ →</Link></div>
     </section>
     <FluxFooter />
   </main>;

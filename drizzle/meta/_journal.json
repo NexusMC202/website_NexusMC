@@ -15,6 +15,13 @@
       "when": 1785305151634,
       "tag": "0001_colorful_sway",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1787069939746,
+      "tag": "0002_spotty_magdalene",
+      "breakpoints": true
     }
   ]
 }

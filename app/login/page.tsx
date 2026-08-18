@@ -41,12 +41,13 @@ export default function LoginPage() {
     event.preventDefault();
     setBusy(true);
     setError("");
-    const data = Object.fromEntries(new FormData(event.currentTarget));
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData);
     const endpoint = mode === "telegram" ? "/api/auth/telegram/start" : `/api/auth/${mode}`;
     const response = await fetch(endpoint, {
       method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
+      ...(mode === "register" ? {} : { headers: { "content-type": "application/json" } }),
+      body: mode === "register" ? formData : JSON.stringify(data),
     });
     const result = await response.json() as TelegramChallenge & { error?: string };
     setBusy(false);
@@ -112,6 +113,9 @@ export default function LoginPage() {
         <input id="email" name="email" type="email" required autoComplete="email" placeholder="you@example.com" />
         <label htmlFor="registerPassword">ПАРОЛЬ САЙТА</label>
         <input id="registerPassword" name="password" type="password" required minLength={8} autoComplete="new-password" placeholder="Минимум 8 символов" />
+        <label htmlFor="skin">СКИН ПЕРСОНАЖА <span className="optional-label">НЕОБЯЗАТЕЛЬНО</span></label>
+        <label className="skin-drop" htmlFor="skin"><b>ЗАГРУЗИТЬ PNG-СКИН</b><span>64×64 или классический 64×32 · до 2 МБ</span></label>
+        <input className="skin-file" id="skin" name="skin" type="file" accept="image/png" />
       </>}
 
       {error && <p className="form-error">{error}</p>}

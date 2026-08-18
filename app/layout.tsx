@@ -5,11 +5,11 @@ import { LanguageRuntime } from "./language-runtime";
 export const metadata: Metadata = {
   metadataBase: new URL("https://nexusmc.flux-productions.com"),
   title: {
-    default: "NEXUS — One core. Infinite possibilities.",
+    default: "NEXUS — GEARMORPH & AURION",
     template: "%s — NEXUS",
   },
   description:
-    "NEXUS Season II — science-fantasy Minecraft project by Flux Production.",
+    "NEXUS — сеть Minecraft-миров GEARMORPH и AURION от Flux Production.",
   icons: {
     icon: [
       { url: "/favicon.ico?v=3", type: "image/x-icon", sizes: "32x32" },
@@ -19,15 +19,15 @@ export const metadata: Metadata = {
     apple: "/nexus-favicon.png",
   },
   openGraph: {
-    title: "NEXUS — One core. Infinite possibilities.",
-    description: "Science-fantasy Minecraft NeoForge 1.21.1 · Season II",
-    images: [{ url: "/og.png", width: 1728, height: 928, alt: "NEXUS Season II" }],
+    title: "NEXUS — GEARMORPH & AURION",
+    description: "Два Minecraft-мира. Одна история.",
+    images: [{ url: "/gearmorph-world.png", width: 1672, height: 939, alt: "GEARMORPH — Minecraft сервер" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NEXUS — One core. Infinite possibilities.",
-    description: "Science-fantasy Minecraft NeoForge 1.21.1 · Season II",
-    images: ["/og.png"],
+    title: "NEXUS — GEARMORPH & AURION",
+    description: "Два Minecraft-мира. Одна история.",
+    images: ["/gearmorph-world.png"],
   },
 };
 
