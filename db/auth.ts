@@ -25,6 +25,9 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS email_verification_codes (id TEXT PRIMARY KEY, email TEXT NOT NULL, code_hash TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
     db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS email_verification_codes_email_idx ON email_verification_codes(email COLLATE NOCASE)"),
     db.prepare("CREATE INDEX IF NOT EXISTS email_verification_codes_expiry_idx ON email_verification_codes(expires_at)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS password_reset_codes (id TEXT PRIMARY KEY, email TEXT NOT NULL, code_hash TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
+    db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS password_reset_codes_email_idx ON password_reset_codes(email COLLATE NOCASE)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS password_reset_codes_expiry_idx ON password_reset_codes(expires_at)"),
   ]);
   const columns = await db.prepare("PRAGMA table_info(users)").all<{ name: string }>();
   if (!columns.results.some(column => column.name === "skin_key")) {

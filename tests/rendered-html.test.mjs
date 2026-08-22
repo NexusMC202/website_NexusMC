@@ -32,3 +32,17 @@ test("registration uses email verification and has no Telegram flow", async () =
   assert.match(requestCode, /padStart\(6/);
   assert.match(requestCode, /600_000/);
 });
+
+test("password recovery uses an emailed one-time code", async () => {
+  const [login, requestReset, confirmReset] = await Promise.all([
+    readFile("app/login/page.tsx", "utf8"),
+    readFile("app/api/auth/password-reset/request-code/route.ts", "utf8"),
+    readFile("app/api/auth/password-reset/confirm/route.ts", "utf8"),
+  ]);
+  assert.match(login, /ЗАБЫЛИ ПАРОЛЬ/);
+  assert.match(login, /СОХРАНИТЬ НОВЫЙ ПАРОЛЬ/);
+  assert.match(requestReset, /password_reset_codes/);
+  assert.match(requestReset, /восстановление аккаунта NEXUS/);
+  assert.match(confirmReset, /hashPassword/);
+  assert.match(confirmReset, /DELETE FROM sessions/);
+});
