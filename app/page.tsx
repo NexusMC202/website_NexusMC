@@ -10,7 +10,7 @@ export default function Home() {
         <p className="reform-kicker">FORCECORE INC. / MINECRAFT NETWORK</p>
         <h1>ДВА МИРА.<br /><span>ОДНА ИСТОРИЯ.</span></h1>
         <p className="reform-lead">GEARMORPH — технологическое выживание на NeoForge.<br />AURION — творческий строительный мир на Fabric.</p>
-        <div className="reform-actions"><Link href="/login">СОЗДАТЬ АККАУНТ</Link><a href="#worlds">ВЫБРАТЬ МИР ↓</a></div>
+        <div className="reform-actions"><Link href="/download">СКАЧАТЬ ЛАУНЧЕР ↓</Link><Link href="/login">СОЗДАТЬ АККАУНТ</Link><a href="#worlds">ВЫБРАТЬ МИР ↓</a></div>
       </div>
       <div className="reform-mark">N</div>
       <div className="reform-status"><i /> СЕТЬ NEXUS <b>ONLINE</b></div>
