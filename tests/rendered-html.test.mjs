@@ -29,6 +29,7 @@ test("registration uses email verification and has no Telegram flow", async () =
   ]);
   assert.doesNotMatch(login, /Telegram|telegram|TG \+ НИК/);
   assert.match(login, /verificationCode/);
+  assert.match(login, /content-type.*application\/json/);
   assert.match(requestCode, /padStart\(6/);
   assert.match(requestCode, /600_000/);
 });

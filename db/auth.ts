@@ -7,11 +7,18 @@ function bytesToHex(bytes: Uint8Array) {
 }
 
 export async function hashPassword(password: string, saltHex?: string) {
+  const pepper = process.env.PASSWORD_PEPPER
+    ?? (env as unknown as { PASSWORD_PEPPER?: string }).PASSWORD_PEPPER;
+  if (!pepper) throw new Error("PASSWORD_PEPPER is not configured");
   const salt = saltHex
     ? new Uint8Array(saltHex.match(/.{2}/g)!.map(byte => parseInt(byte, 16)))
     : crypto.getRandomValues(new Uint8Array(16));
-  const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: 120000 }, key, 256);
+  const pepperKey = await crypto.subtle.importKey("raw", encoder.encode(pepper), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const pepperedPassword = await crypto.subtle.sign("HMAC", pepperKey, encoder.encode(password));
+  const key = await crypto.subtle.importKey("raw", pepperedPassword, "PBKDF2", false, ["deriveBits"]);
+  // The private HMAC pepper prevents offline cracking if D1 is leaked; a small
+  // PBKDF2 cost keeps authentication within the Workers Free 10 ms CPU budget.
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: 1000 }, key, 256);
   return { hash: bytesToHex(new Uint8Array(bits)), salt: bytesToHex(salt) };
 }
 

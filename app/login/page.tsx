@@ -53,32 +53,44 @@ export default function LoginPage() {
       }
       return;
     }
-    const response = mode === "login"
-      ? await fetch("/api/auth/login", {
-          method: "POST", headers: { "content-type": "application/json" },
-          body: JSON.stringify(Object.fromEntries(formData)),
-        })
-      : mode === "register" ? await fetch("/api/auth/register", {
-          method: "POST",
-          body: (() => {
-            const registration = pendingForm ?? formData;
-            registration.set("challengeId", challengeId);
-            registration.set("verificationCode", String(formData.get("verificationCode") ?? ""));
-            return registration;
-          })(),
-        }) : await fetch("/api/auth/password-reset/confirm", {
-          method: "POST", headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            email: pendingEmail, challengeId,
-            verificationCode: String(formData.get("verificationCode") ?? ""),
-            password: String(formData.get("password") ?? ""),
-          }),
-        });
-    const result = await response.json() as { error?: string };
-    setBusy(false);
-    if (!response.ok) return setError(result.error ?? "Не удалось продолжить.");
-    if (mode === "reset") { switchMode("login"); setNotice("ПАРОЛЬ ИЗМЕНЁН. ТЕПЕРЬ ВОЙДИТЕ В АККАУНТ."); return; }
-    window.location.href = "/profile";
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20_000);
+    try {
+      const response = mode === "login"
+        ? await fetch("/api/auth/login", {
+            method: "POST", headers: { "content-type": "application/json" },
+            body: JSON.stringify(Object.fromEntries(formData)), signal: controller.signal,
+          })
+        : mode === "register" ? await fetch("/api/auth/register", {
+            method: "POST", signal: controller.signal, headers: { "content-type": "application/json" },
+            body: JSON.stringify((() => {
+              const registration = pendingForm ?? formData;
+              return {
+                ...Object.fromEntries(registration),
+                challengeId,
+                verificationCode: String(formData.get("verificationCode") ?? ""),
+              };
+            })()),
+          }) : await fetch("/api/auth/password-reset/confirm", {
+            method: "POST", headers: { "content-type": "application/json" }, signal: controller.signal,
+            body: JSON.stringify({
+              email: pendingEmail, challengeId,
+              verificationCode: String(formData.get("verificationCode") ?? ""),
+              password: String(formData.get("password") ?? ""),
+            }),
+          });
+      const result = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) return setError(result.error ?? `Сервер не завершил запрос (${response.status}). Попробуйте ещё раз.`);
+      if (mode === "reset") { switchMode("login"); setNotice("ПАРОЛЬ ИЗМЕНЁН. ТЕПЕРЬ ВОЙДИТЕ В АККАУНТ."); return; }
+      window.location.href = "/profile";
+    } catch (requestError) {
+      setError(requestError instanceof DOMException && requestError.name === "AbortError"
+        ? "Сервер отвечает слишком долго. Попробуйте ещё раз."
+        : "Соединение прервано. Проверьте интернет и повторите попытку.");
+    } finally {
+      window.clearTimeout(timeout);
+      setBusy(false);
+    }
   }
 
   return <main className="login-page path-login">
