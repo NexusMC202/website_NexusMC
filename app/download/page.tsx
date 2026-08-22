@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Скачайте официальный NEXUS Launcher для Windows. Версии для Linux и macOS появятся позже.",
 };
 
-const WINDOWS_DOWNLOAD = "https://github.com/NexusMC202/website_NexusMC/releases/download/launcher-v0.7.1/NEXUS-Launcher.exe";
+const WINDOWS_DOWNLOAD = "https://github.com/NexusMC202/website_NexusMC/releases/download/launcher-v0.7.2/NEXUS-Launcher.exe";
 
 export default function DownloadPage() {
   return <main className="download-page">
@@ -17,7 +17,7 @@ export default function DownloadPage() {
       <h1>ТВОЙ ВХОД<br />В <span>NEXUS.</span></h1>
       <div className="download-intro">
         <p>Официальный лаунчер устанавливает нужную версию Minecraft, проверяет сборки GEARMORPH и AURION и автоматически получает обновления.</p>
-        <span>ТЕКУЩАЯ ВЕРСИЯ · 0.7.1</span>
+        <span>ТЕКУЩАЯ ВЕРСИЯ · 0.7.2</span>
       </div>
     </section>
 
