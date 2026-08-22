@@ -1,9 +1,9 @@
 export async function GET() {
   return Response.json({
-    version: "1.0.0",
-    url: "https://github.com/NexusMC202/website_NexusMC/releases/download/modpack-building-v1.0.0/building-fabric-client-1.0.0.zip",
-    sha256: "1526f8ba5a1042e12053c3865179101f4f69347843b031f23ac2d0ca6b8d2934",
-    changelog: "Первая полная публичная сборка строительного Fabric-сервера",
+    version: "1.0.1",
+    url: "https://github.com/NexusMC202/website_NexusMC/releases/download/modpack-building-v1.0.1/building-fabric-client-1.0.1.zip",
+    sha256: "20fdf2eafe57a43fde5570de057085e057f383c371c8bb1d8ddd3f7774aeeb4c",
+    changelog: "Исправлено падение Iris/Sodium при входе в мир",
     minecraft_server: "build.flux-productions.com",
   }, {
     headers: { "Cache-Control": "public, max-age=60" },
