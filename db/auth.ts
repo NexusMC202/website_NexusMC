@@ -35,11 +35,37 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS password_reset_codes (id TEXT PRIMARY KEY, email TEXT NOT NULL, code_hash TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL)"),
     db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS password_reset_codes_email_idx ON password_reset_codes(email COLLATE NOCASE)"),
     db.prepare("CREATE INDEX IF NOT EXISTS password_reset_codes_expiry_idx ON password_reset_codes(expires_at)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS launcher_sessions (token_hash TEXT PRIMARY KEY, user_id TEXT NOT NULL, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, last_used_at INTEGER NOT NULL)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS launcher_sessions_user_idx ON launcher_sessions(user_id)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS launcher_sessions_expiry_idx ON launcher_sessions(expires_at)"),
   ]);
   const columns = await db.prepare("PRAGMA table_info(users)").all<{ name: string }>();
   if (!columns.results.some(column => column.name === "skin_key")) {
     await db.prepare("ALTER TABLE users ADD COLUMN skin_key TEXT").run();
   }
+}
+
+export async function hashLauncherToken(token: string) {
+  const digest = await crypto.subtle.digest("SHA-256", encoder.encode(token));
+  return bytesToHex(new Uint8Array(digest));
+}
+
+export function readBearerToken(request: Request) {
+  const value = request.headers.get("authorization") ?? "";
+  return value.startsWith("Bearer ") ? value.slice(7).trim() : null;
+}
+
+export async function authenticatedLauncherUser(request: Request) {
+  const token = readBearerToken(request);
+  if (!token) return null;
+  const tokenHash = await hashLauncherToken(token);
+  const row = await env.DB.prepare(
+    "SELECT launcher_sessions.token_hash,users.id,users.email,users.minecraft_nick,users.skin_key FROM launcher_sessions JOIN users ON users.id=launcher_sessions.user_id WHERE launcher_sessions.token_hash=? AND launcher_sessions.expires_at>?"
+  ).bind(tokenHash, Date.now()).first<Record<string, string>>();
+  if (!row) return null;
+  await env.DB.prepare("UPDATE launcher_sessions SET last_used_at=? WHERE token_hash=?")
+    .bind(Date.now(), tokenHash).run();
+  return row;
 }
 
 export async function hashVerificationCode(challengeId: string, code: string) {
