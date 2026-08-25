@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -8,7 +8,27 @@ export const users = sqliteTable("users", {
   passwordSalt: text("password_salt").notNull(),
   createdAt: integer("created_at").notNull(),
   skinKey: text("skin_key"),
+  skinModel: text("skin_model").notNull().default("default"),
 });
+
+export const userActivity = sqliteTable("user_activity", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  kind: text("kind").notNull(),
+  detail: text("detail").notNull(),
+  source: text("source").notNull(),
+  createdAt: integer("created_at").notNull(),
+}, table => [index("idx_user_activity_user_created").on(table.userId, table.createdAt)]);
+
+export const donations = sqliteTable("donations", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  title: text("title").notNull(),
+  amountMinor: integer("amount_minor").notNull(),
+  currency: text("currency").notNull().default("RUB"),
+  status: text("status").notNull().default("paid"),
+  createdAt: integer("created_at").notNull(),
+}, table => [index("idx_donations_user_created").on(table.userId, table.createdAt)]);
 
 export const sessions = sqliteTable("sessions", {
   id: text("id").primaryKey(),

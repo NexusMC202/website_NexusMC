@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { authenticatedUser, ensureAuthTables, validateMinecraftSkin } from "../../../../db/auth";
+import { authenticatedUser, ensureAuthTables, recordUserActivity, validateMinecraftSkin } from "../../../../db/auth";
 
 export async function GET(request: Request) {
   await ensureAuthTables();
@@ -28,5 +28,19 @@ export async function PUT(request: Request) {
   const key = `skins/${user.id}.png`;
   await env.SKINS.put(key, bytes, { httpMetadata: { contentType: "image/png" } });
   await env.DB.prepare("UPDATE users SET skin_key=? WHERE id=?").bind(key, user.id).run();
+  await recordUserActivity(user.id, "skin", "Загружен новый PNG-скин", "website");
   return Response.json({ ok: true, skinUrl: `/api/profile/skin?v=${Date.now()}` });
+}
+
+export async function PATCH(request: Request) {
+  await ensureAuthTables();
+  const user = await authenticatedUser(request);
+  if (!user) return Response.json({ error: "Сначала войдите в аккаунт." }, { status: 401 });
+  const { model } = await request.json() as { model?: string };
+  if (model !== "default" && model !== "slim") {
+    return Response.json({ error: "Неизвестный тип рук." }, { status: 400 });
+  }
+  await env.DB.prepare("UPDATE users SET skin_model=? WHERE id=?").bind(model, user.id).run();
+  await recordUserActivity(user.id, "skin_model", model === "slim" ? "Выбраны тонкие руки" : "Выбраны обычные руки", "website");
+  return Response.json({ ok: true, model });
 }

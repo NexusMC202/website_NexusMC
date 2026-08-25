@@ -6,6 +6,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "no_bundle": true,
   "workers_dev": true,
+  "vars": {
+    "BISQUIT_SERVER_ID": "0d2ad2ea",
+    "BISQUIT_PANEL_URL": "https://mgr.bisquit.host"
+  },
   "rules": [
     {
       "type": "ESModule",

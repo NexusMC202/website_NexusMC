@@ -9,6 +9,7 @@ export async function GET(request: Request) {
       email: user.email,
       minecraftNick: user.minecraft_nick,
       skinUrl: user.skin_key ? "/api/launcher/profile/skin" : null,
+      skinModel: user.skin_model ?? "default",
     },
   });
 }

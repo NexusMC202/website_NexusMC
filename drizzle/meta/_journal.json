@@ -36,6 +36,20 @@
       "when": 1787421079617,
       "tag": "0004_organic_wild_pack",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1787660870786,
+      "tag": "0005_magenta_the_twelve",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1787660968731,
+      "tag": "0006_smiling_nightcrawler",
+      "breakpoints": true
     }
   ]
 }

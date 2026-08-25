@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
-import { ensureAuthTables, hashPassword, hashVerificationCode, sessionCookie } from "../../../../db/auth";
+import { ensureAuthTables, hashPassword, hashVerificationCode, recordUserActivity, sessionCookie } from "../../../../db/auth";
+import { allowMinecraftNick } from "../../../../db/minecraftServer";
 
 export async function POST(request: Request) {
   await ensureAuthTables();
@@ -46,6 +47,19 @@ export async function POST(request: Request) {
       env.DB.prepare("INSERT INTO sessions (id,user_id,remaining_entries,expires_at,created_at) VALUES (?,?,?,?,?)")
         .bind(session, id, 2, Date.now() + 2592000000, Date.now()),
     ]);
+    await recordUserActivity(id, "registration", "Аккаунт NEXUS создан", "website");
+    // Registration is already committed at this point. A temporary hosting
+    // outage must not lose the account; the failure is observable and can be
+    // reconciled, while successful calls update the live whitelist instantly.
+    try {
+      await allowMinecraftNick(cleanNick);
+    } catch (serverSyncError) {
+      console.error(JSON.stringify({
+        event: "minecraft_whitelist_sync_failed",
+        minecraftNick: cleanNick,
+        error: serverSyncError instanceof Error ? serverSyncError.message : "unknown",
+      }));
+    }
     return Response.json({ ok: true, user: { email: cleanEmail, minecraftNick: cleanNick }, remainingEntries: 2 }, { headers: { "Set-Cookie": sessionCookie(session) } });
   } catch (registrationError) {
     console.error(JSON.stringify({ event: "registration_failed", error: registrationError instanceof Error ? registrationError.message : "unknown" }));

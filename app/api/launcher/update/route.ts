@@ -1,9 +1,9 @@
 export async function GET() {
   return Response.json({
-    version: "0.7.2",
-    url: "https://github.com/NexusMC202/website_NexusMC/releases/download/launcher-v0.7.2/NEXUS-Launcher.exe",
-    sha256: "69fd00cf31d2ac0aa928e7c7a6718d73080526188f0ba4a267fb8dbbb180486a",
-    notes: "Скины NEXUS в Minecraft и публичная Fabric-сборка",
+    version: "0.9.3",
+    url: "https://github.com/NexusMC202/website_NexusMC/releases/download/launcher-v0.9.3/NexusLauncher.exe",
+    sha256: "4a80d68e689200eea45443eb38fcdc8617da5c8e88978b391fa7ad5ed0ad9048",
+    notes: "Поддержка выбра обычных и тонких рук для скина NEXUS.",
   }, {
     headers: { "Cache-Control": "public, max-age=60, s-maxage=60" },
   });

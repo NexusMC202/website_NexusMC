@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { ensureAuthTables, hashPassword, sessionCookie } from "../../../../db/auth";
+import { ensureAuthTables, hashPassword, recordUserActivity, sessionCookie } from "../../../../db/auth";
 
 export async function POST(request: Request) {
   await ensureAuthTables();
@@ -15,5 +15,6 @@ export async function POST(request: Request) {
   const session = crypto.randomUUID();
   await env.DB.prepare("INSERT INTO sessions (id,user_id,remaining_entries,expires_at,created_at) VALUES (?,?,?,?,?)")
     .bind(session, user.id, 2, Date.now() + 2592000000, Date.now()).run();
+  await recordUserActivity(user.id, "login", "Вход в профиль на сайте", "website");
   return Response.json({ ok: true, user: { email: user.email, minecraftNick: user.minecraft_nick }, remainingEntries: 2 }, { headers: { "Set-Cookie": sessionCookie(session) } });
 }

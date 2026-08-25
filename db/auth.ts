@@ -38,11 +38,24 @@ export async function ensureAuthTables() {
     db.prepare("CREATE TABLE IF NOT EXISTS launcher_sessions (token_hash TEXT PRIMARY KEY, user_id TEXT NOT NULL, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, last_used_at INTEGER NOT NULL)"),
     db.prepare("CREATE INDEX IF NOT EXISTS launcher_sessions_user_idx ON launcher_sessions(user_id)"),
     db.prepare("CREATE INDEX IF NOT EXISTS launcher_sessions_expiry_idx ON launcher_sessions(expires_at)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS user_activity (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, kind TEXT NOT NULL, detail TEXT NOT NULL, source TEXT NOT NULL, created_at INTEGER NOT NULL)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS idx_user_activity_user_created ON user_activity(user_id, created_at DESC)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS donations (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL, amount_minor INTEGER NOT NULL, currency TEXT NOT NULL DEFAULT 'RUB', status TEXT NOT NULL DEFAULT 'paid', created_at INTEGER NOT NULL)"),
+    db.prepare("CREATE INDEX IF NOT EXISTS idx_donations_user_created ON donations(user_id, created_at DESC)"),
   ]);
   const columns = await db.prepare("PRAGMA table_info(users)").all<{ name: string }>();
   if (!columns.results.some(column => column.name === "skin_key")) {
     await db.prepare("ALTER TABLE users ADD COLUMN skin_key TEXT").run();
   }
+  if (!columns.results.some(column => column.name === "skin_model")) {
+    await db.prepare("ALTER TABLE users ADD COLUMN skin_model TEXT NOT NULL DEFAULT 'default'").run();
+  }
+}
+
+export async function recordUserActivity(userId: string, kind: string, detail: string, source: string) {
+  await env.DB.prepare(
+    "INSERT INTO user_activity (id,user_id,kind,detail,source,created_at) VALUES (?,?,?,?,?,?)",
+  ).bind(crypto.randomUUID(), userId, kind.slice(0, 32), detail.slice(0, 240), source.slice(0, 32), Date.now()).run();
 }
 
 export async function hashLauncherToken(token: string) {
@@ -60,7 +73,7 @@ export async function authenticatedLauncherUser(request: Request) {
   if (!token) return null;
   const tokenHash = await hashLauncherToken(token);
   const row = await env.DB.prepare(
-    "SELECT launcher_sessions.token_hash,users.id,users.email,users.minecraft_nick,users.skin_key FROM launcher_sessions JOIN users ON users.id=launcher_sessions.user_id WHERE launcher_sessions.token_hash=? AND launcher_sessions.expires_at>?"
+    "SELECT launcher_sessions.token_hash,users.id,users.email,users.minecraft_nick,users.skin_key,users.skin_model FROM launcher_sessions JOIN users ON users.id=launcher_sessions.user_id WHERE launcher_sessions.token_hash=? AND launcher_sessions.expires_at>?"
   ).bind(tokenHash, Date.now()).first<Record<string, string>>();
   if (!row) return null;
   await env.DB.prepare("UPDATE launcher_sessions SET last_used_at=? WHERE token_hash=?")
@@ -77,7 +90,7 @@ export async function authenticatedUser(request: Request) {
   const sessionId = readSessionId(request);
   if (!sessionId) return null;
   return env.DB.prepare(
-    "SELECT users.id,users.email,users.minecraft_nick,users.skin_key FROM sessions JOIN users ON users.id=sessions.user_id WHERE sessions.id=? AND sessions.expires_at>? AND sessions.remaining_entries>0"
+    "SELECT users.id,users.email,users.minecraft_nick,users.skin_key,users.skin_model FROM sessions JOIN users ON users.id=sessions.user_id WHERE sessions.id=? AND sessions.expires_at>? AND sessions.remaining_entries>0"
   ).bind(sessionId, Date.now()).first<Record<string, string>>();
 }
 
