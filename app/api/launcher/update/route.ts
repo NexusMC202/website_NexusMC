@@ -21,17 +21,17 @@ export async function GET(request: Request) {
     return Response.json({
       platform,
       available: false,
-      version: "0.9.8",
+      version: "0.9.9",
       notes: "Сборка для этой платформы ещё не опубликована.",
     }, { headers: { "Cache-Control": "public, max-age=60, s-maxage=60" } });
   }
   return Response.json({
     platform: "windows",
     available: true,
-    version: "0.9.8",
+    version: "0.9.9",
     url: "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NexusLauncher.exe",
-    sha256: "02ddd936bd0957442212226456253d222e98c18daa4fbad459ce2f58bfad7d6f",
-    notes: "Новые баннеры GEARMORPH, ARCHVALE, PINEWOOD и ELDERFALL; обновлён каталог миров.",
+    sha256: "0e928da2ccda42dd70a7ff66a2b42332bf3c9ee3cf83e3b90ab3e5ab2b38a66b",
+    notes: "Исправлен запуск QtCore на чистых Windows-системах; включены новые баннеры и каталог миров.",
   }, {
     headers: { "Cache-Control": "public, max-age=60, s-maxage=60" },
   });
