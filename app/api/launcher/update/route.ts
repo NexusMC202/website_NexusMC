@@ -21,17 +21,17 @@ export async function GET(request: Request) {
     return Response.json({
       platform,
       available: false,
-      version: "0.9.9",
+      version: "0.9.10",
       notes: "Сборка для этой платформы ещё не опубликована.",
     }, { headers: { "Cache-Control": "public, max-age=60, s-maxage=60" } });
   }
   return Response.json({
     platform: "windows",
     available: true,
-    version: "0.9.9",
+    version: "0.9.10",
     url: "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NexusLauncher.exe",
-    sha256: "0e928da2ccda42dd70a7ff66a2b42332bf3c9ee3cf83e3b90ab3e5ab2b38a66b",
-    notes: "Исправлен запуск QtCore на чистых Windows-системах; включены новые баннеры и каталог миров.",
+    sha256: "4d659440c7facf2f81622a89b1694d8ff98d27617938cea267f0f6bf4cf986d0",
+    notes: "Qt переведён на стабильную ветку без внешней ICU-зависимости; добавлена автономная portable-сборка.",
   }, {
     headers: { "Cache-Control": "public, max-age=60, s-maxage=60" },
   });
