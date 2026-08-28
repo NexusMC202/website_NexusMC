@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const WINDOWS_EXE_DOWNLOAD = "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NexusLauncher.exe";
-const WINDOWS_ZIP_DOWNLOAD = "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NEXUS-Launcher-Portable-v0.9.10.zip";
+const WINDOWS_ZIP_DOWNLOAD = "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NEXUS-Launcher-Portable-v0.9.11.zip";
 const DOWNLOAD_BASE = "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download";
 
 export default function DownloadPage() {
