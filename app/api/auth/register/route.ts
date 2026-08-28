@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { ensureAuthTables, hashPassword, hashVerificationCode, recordUserActivity, sessionCookie } from "../../../../db/auth";
+import { accountSecuritySignals, checkRegistrationProtection, ensureAuthTables, hashPassword, hashVerificationCode, recordAccountSecurityEvent, recordUserActivity, sessionCookie } from "../../../../db/auth";
 import { allowMinecraftNick } from "../../../../db/minecraftServer";
 
 export async function POST(request: Request) {
@@ -11,6 +11,7 @@ export async function POST(request: Request) {
   const minecraftNick = String(payload instanceof FormData ? payload.get("minecraftNick") ?? "" : payload.minecraftNick ?? "");
   const challengeId = String(payload instanceof FormData ? payload.get("challengeId") ?? "" : payload.challengeId ?? "");
   const verificationCode = String(payload instanceof FormData ? payload.get("verificationCode") ?? "" : payload.verificationCode ?? "");
+  const deviceId = String(payload instanceof FormData ? payload.get("deviceId") ?? "" : payload.deviceId ?? "");
   const cleanEmail = email?.trim().toLowerCase();
   const cleanNick = minecraftNick?.trim();
   if (!cleanEmail || !cleanNick || !/^[A-Za-z0-9_]{3,16}$/.test(cleanNick) || !password || password.length < 8) {
@@ -19,10 +20,16 @@ export async function POST(request: Request) {
   if (!challengeId || !/^\d{6}$/.test(verificationCode)) {
     return Response.json({ error: "Введите шестизначный код из письма." }, { status: 400 });
   }
-  const challenge = await env.DB.prepare("SELECT email,code_hash,attempts,expires_at FROM email_verification_codes WHERE id=?")
+  let signals;
+  try { signals = await accountSecuritySignals(request, deviceId); }
+  catch { return Response.json({ error: "Не удалось подтвердить устройство. Обновите страницу." }, { status: 400 }); }
+  const challenge = await env.DB.prepare("SELECT email,code_hash,attempts,expires_at,device_hash,ip_hash FROM email_verification_codes WHERE id=?")
     .bind(challengeId).first<Record<string, string | number>>();
   if (!challenge || String(challenge.email).toLowerCase() !== cleanEmail || Number(challenge.expires_at) < Date.now() || Number(challenge.attempts) >= 5) {
     return Response.json({ error: "Код истёк. Запросите новый код." }, { status: 400 });
+  }
+  if (challenge.device_hash !== signals.deviceHash || challenge.ip_hash !== signals.ipHash) {
+    return Response.json({ error: "Регистрацию нужно завершить на том же устройстве и подключении." }, { status: 403 });
   }
   const suppliedHash = await hashVerificationCode(challengeId, verificationCode);
   if (suppliedHash !== challenge.code_hash) {
@@ -36,6 +43,8 @@ export async function POST(request: Request) {
     const nickTaken = exists.minecraft_nick?.toLowerCase() === cleanNick.toLowerCase();
     return Response.json({ error: nickTaken ? "Этот Minecraft-ник уже привязан к аккаунту." : "Аккаунт с такой почтой уже существует." }, { status: 409 });
   }
+  const protectionError = await checkRegistrationProtection(signals.deviceHash, signals.ipHash);
+  if (protectionError) return Response.json({ error: protectionError }, { status: 409 });
   const id = crypto.randomUUID();
   try {
     const secured = await hashPassword(password);
@@ -46,7 +55,10 @@ export async function POST(request: Request) {
       env.DB.prepare("DELETE FROM email_verification_codes WHERE id=?").bind(challengeId),
       env.DB.prepare("INSERT INTO sessions (id,user_id,remaining_entries,expires_at,created_at) VALUES (?,?,?,?,?)")
         .bind(session, id, 2, Date.now() + 2592000000, Date.now()),
+      env.DB.prepare("INSERT INTO account_device_links (device_hash,user_id,source,created_at,last_seen_at) VALUES (?,?,?,?,?)")
+        .bind(signals.deviceHash, id, "website", Date.now(), Date.now()),
     ]);
+    await recordAccountSecurityEvent(signals.deviceHash, signals.ipHash, "REGISTER_SUCCESS");
     await recordUserActivity(id, "registration", "Аккаунт NEXUS создан", "website");
     // Registration is already committed at this point. A temporary hosting
     // outage must not lose the account; the failure is observable and can be

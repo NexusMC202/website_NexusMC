@@ -1,9 +1,37 @@
-export async function GET() {
+export async function GET(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const platform = params.get("platform") ?? "windows";
+  const arch = params.get("arch") === "x64" ? "x64" : "arm64";
+  if (platform === "macos" || platform === "darwin") {
+    const hashes = {
+      arm64: "897d972dc8434086d6a4e041cb40beb4b7c4ad21ea41e2cd5bacfe794be086cc",
+      x64: "fd0571740b3a65847656a0d2fb3e61f52311d4f78ed4ab329f3c85fe0f5996a2",
+    };
+    return Response.json({
+      platform: "macos",
+      arch,
+      available: true,
+      version: "0.9.6",
+      url: `https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NEXUS-Launcher-macOS-${arch}.dmg`,
+      sha256: hashes[arch],
+      notes: "Первая нативная версия NEXUS Launcher для macOS.",
+    }, { headers: { "Cache-Control": "public, max-age=60, s-maxage=60" } });
+  }
+  if (platform !== "windows") {
+    return Response.json({
+      platform,
+      available: false,
+      version: "0.9.6",
+      notes: "Сборка для этой платформы ещё не опубликована.",
+    }, { headers: { "Cache-Control": "public, max-age=60, s-maxage=60" } });
+  }
   return Response.json({
-    version: "0.9.5",
-    url: "https://github.com/NexusMC202/website_NexusMC/releases/download/launcher-v0.9.5/NexusLauncher.exe",
-    sha256: "7c7afd8fed8c13954545c9970a05dbdd7f67fc2e0a6ed3ab4e27884138a034a7",
-    notes: "Исправлен бесконечный цикл самообновления лаунчера.",
+    platform: "windows",
+    available: true,
+    version: "0.9.6",
+    url: "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NexusLauncher.exe",
+    sha256: "964228944e92788f5fddc1543ddba851fca3c852023ce62bdcf2d57e84256812",
+    notes: "Добавлен резервный сервер манифестов и исправлена загрузка сборки у новых игроков.",
   }, {
     headers: { "Cache-Control": "public, max-age=60, s-maxage=60" },
   });

@@ -1,13 +1,18 @@
 import { env } from "cloudflare:workers";
-import { ensureAuthTables, hashVerificationCode } from "../../../../../db/auth";
+import { accountSecuritySignals, checkRegistrationProtection, ensureAuthTables, hashVerificationCode, recordAccountSecurityEvent } from "../../../../../db/auth";
 
 export async function POST(request: Request) {
   await ensureAuthTables();
-  const { email } = await request.json() as { email?: string };
+  const { email, deviceId } = await request.json() as { email?: string; deviceId?: string };
   const cleanEmail = email?.trim().toLowerCase();
   if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
     return Response.json({ error: "Введите корректную электронную почту." }, { status: 400 });
   }
+  let signals;
+  try { signals = await accountSecuritySignals(request, deviceId); }
+  catch { return Response.json({ error: "Не удалось подтвердить устройство. Обновите страницу." }, { status: 400 }); }
+  const protectionError = await checkRegistrationProtection(signals.deviceHash, signals.ipHash);
+  if (protectionError) return Response.json({ error: protectionError }, { status: 429 });
   const exists = await env.DB.prepare("SELECT id FROM users WHERE lower(email)=? LIMIT 1").bind(cleanEmail).first();
   if (exists) return Response.json({ error: "Аккаунт с такой почтой уже существует." }, { status: 409 });
   const recent = await env.DB.prepare("SELECT created_at FROM email_verification_codes WHERE lower(email)=? LIMIT 1")
@@ -25,8 +30,9 @@ export async function POST(request: Request) {
   const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
   const codeHash = await hashVerificationCode(challengeId, code);
   await env.DB.prepare("DELETE FROM email_verification_codes WHERE lower(email)=?").bind(cleanEmail).run();
-  await env.DB.prepare("INSERT INTO email_verification_codes (id,email,code_hash,attempts,expires_at,created_at) VALUES (?,?,?,?,?,?)")
-    .bind(challengeId, cleanEmail, codeHash, 0, Date.now() + 600_000, Date.now()).run();
+  await env.DB.prepare("INSERT INTO email_verification_codes (id,email,code_hash,attempts,expires_at,created_at,device_hash,ip_hash) VALUES (?,?,?,?,?,?,?,?)")
+    .bind(challengeId, cleanEmail, codeHash, 0, Date.now() + 600_000, Date.now(), signals.deviceHash, signals.ipHash).run();
+  await recordAccountSecurityEvent(signals.deviceHash, signals.ipHash, "CODE_REQUEST");
   const sent = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },

@@ -14,6 +14,13 @@ export default function LoginPage() {
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
 
+  function registrationDeviceId() {
+    const key = "nexus_registration_device";
+    let value = window.localStorage.getItem(key);
+    if (!value) { value = crypto.randomUUID(); window.localStorage.setItem(key, value); }
+    return value;
+  }
+
   function switchMode(next: Mode) {
     setMode(next); setChallengeId(""); setPendingForm(null); setPendingEmail(""); setError(""); setNotice("");
   }
@@ -25,7 +32,7 @@ export default function LoginPage() {
       const email = String(formData.get("email") ?? "");
       try {
         const response = await fetch("/api/auth/email/request-code", {
-          method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }),
+          method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email, deviceId: registrationDeviceId() }),
         });
         const result = await response.json() as { error?: string; challengeId?: string; email?: string };
         if (!response.ok || !result.challengeId) return setError(result.error ?? "Не удалось отправить код.");
@@ -69,6 +76,7 @@ export default function LoginPage() {
                 ...Object.fromEntries(registration),
                 challengeId,
                 verificationCode: String(formData.get("verificationCode") ?? ""),
+                deviceId: registrationDeviceId(),
               };
             })()),
           }) : await fetch("/api/auth/password-reset/confirm", {

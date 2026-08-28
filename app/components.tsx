@@ -9,6 +9,7 @@ const nav = [
   ["/chronicle", "Хроника", "chronicle"],
   ["/creators", "Авторы", "authors"],
   ["/download", "Лаунчер", "launcher"],
+  ["/donate", "Донат", "donate"],
 ];
 
 function NavItem({ href, label, type, index }: { href:string; label:string; type:string; index:number }) {

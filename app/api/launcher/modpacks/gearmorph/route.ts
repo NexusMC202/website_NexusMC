@@ -1,4 +1,4 @@
-const MANIFEST_URL = "https://github.com/NexusMC202/website_NexusMC/releases/download/modpack-gearmorph-v1.3.0/gearmorph-manifest.json";
+const MANIFEST_URL = "https://github.com/NexusMC202/website_NexusMC/releases/download/modpack-gearmorph-v1.3.2/gearmorph-manifest.json";
 
 export async function GET() {
   const upstream = await fetch(MANIFEST_URL, {

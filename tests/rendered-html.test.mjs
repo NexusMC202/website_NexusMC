@@ -47,3 +47,19 @@ test("password recovery uses an emailed one-time code", async () => {
   assert.match(confirmReset, /hashPassword/);
   assert.match(confirmReset, /DELETE FROM sessions/);
 });
+
+test("nickname cosmetics UI is entitlement driven", async () => {
+  const profile = await readFile("app/profile/page.tsx", "utf8");
+  assert.match(profile, /api\/profile\/cosmetics/);
+  assert.doesNotMatch(profile, />ОБЫЧНЫЙ</);
+  assert.match(profile, /entitlements\.nameStyles\.gradient/);
+  assert.match(profile, /gradientStops\.filter/);
+});
+
+test("cosmetic backend rejects unowned and invalid gradients", async () => {
+  const route = await readFile("app/api/profile/name-style/route.ts", "utf8");
+  const model = await readFile("db/cosmetics.ts", "utf8");
+  assert.match(route, /COSMETIC_NOT_OWNED/);
+  assert.match(route, /INVALID_GRADIENT/);
+  assert.match(model, /stops\.length<2\|\|v\.stops\.length>5/);
+});
