@@ -21,17 +21,17 @@ export async function GET(request: Request) {
     return Response.json({
       platform,
       available: false,
-      version: "0.9.6",
+      version: "0.9.7",
       notes: "Сборка для этой платформы ещё не опубликована.",
     }, { headers: { "Cache-Control": "public, max-age=60, s-maxage=60" } });
   }
   return Response.json({
     platform: "windows",
     available: true,
-    version: "0.9.6",
+    version: "0.9.7",
     url: "https://nexusmc-site.robloxksergg.workers.dev/api/launcher/download/NexusLauncher.exe",
-    sha256: "964228944e92788f5fddc1543ddba851fca3c852023ce62bdcf2d57e84256812",
-    notes: "Добавлен резервный сервер манифестов и исправлена загрузка сборки у новых игроков.",
+    sha256: "b18502867258360762709d7d5711af437940796a958c79fc3520d340fbac0cb7",
+    notes: "Добавлен новый мир PINEWOOD на Minecraft 1.21.11 Fabric и исправлена совместимость Sodium/C2ME.",
   }, {
     headers: { "Cache-Control": "public, max-age=60, s-maxage=60" },
   });
