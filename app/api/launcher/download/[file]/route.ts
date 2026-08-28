@@ -2,7 +2,7 @@ import { env } from "cloudflare:workers";
 
 const FILES: Record<string, { key: string; type: string }> = {
   "NexusLauncher.exe": {
-    key: "launcher/0.9.7/NexusLauncher.exe",
+    key: "launcher/0.9.8/NexusLauncher.exe",
     type: "application/vnd.microsoft.portable-executable",
   },
   "NEXUS-Launcher-Portable-v0.9.6.zip": {
